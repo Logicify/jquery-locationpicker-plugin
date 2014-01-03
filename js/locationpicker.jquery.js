@@ -197,7 +197,7 @@
             if (isPluginApplied(this)) return;
             // Plug-in initialization is required
             // Defaults
-            var settings = $.extend($.fn.locationpicker.defaults, options );
+            var settings = $.extend({}, $.fn.locationpicker.defaults, options );
             // Initialize
             var gmapContext = new GMapContext(this, {
                 zoom: settings.zoom,
@@ -211,18 +211,18 @@
                 locationName: settings.locationName,
                 settings: settings
             });
-            $(this).data("locationpicker", gmapContext);
+            $target.data("locationpicker", gmapContext);
             // Subscribe GMap events
             google.maps.event.addListener(gmapContext.marker, "dragend", function(event) {
-                GmUtility.setPosition(gmapContext, gmapContext.marker.position, function(){
+                GmUtility.setPosition(gmapContext, gmapContext.marker.position, function(context){
                     var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
-                    settings.onchanged(currentLocation, gmapContext.radius, true);
-                    updateInputValues(settings.inputBinding, gmapContext);
+                    context.settings.onchanged(currentLocation, context.radius, true);
+                    updateInputValues(gmapContext.settings.inputBinding, gmapContext);
                 });
             });
-            GmUtility.setPosition(gmapContext, new google.maps.LatLng(settings.location.latitude, settings.location.longitude), function(){
+            GmUtility.setPosition(gmapContext, new google.maps.LatLng(settings.location.latitude, settings.location.longitude), function(context){
                 updateInputValues(settings.inputBinding, gmapContext);
-                settings.oninitialized($target);
+                context.settings.oninitialized($target);
             });
             // Set up input bindings if needed
             setupInputListenersInput(settings.inputBinding, gmapContext);
