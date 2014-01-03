@@ -1,0 +1,30 @@
+{
+    "name": "locationpicker",
+    "title": "jQuery Location Picker",
+    "description": "jQuery plugin for picking address and\\or location on the map with a few advanced features",
+    "keywords": [
+        "googlemap",
+        "gmapapi", "location", 
+        "input", 
+        "map", 
+        "radius"
+    ],
+    "version": "0.1.2",
+    "author": {
+        "name": "Dmitry Berezovsky",
+        "url": "http://logicify.com/"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/Logicify/jquery-locationpicker-plugin/blob/master/LICENSE"
+        }
+    ],
+    "bugs": "https://github.com/jquery/jquery-color/issues",
+    "homepage": "http://logicify.github.io/jquery-locationpicker-plugin/",
+    "docs": "http://logicify.github.io/jquery-locationpicker-plugin/",
+    "download": "https://github.com/Logicify/jquery-locationpicker-plugin",
+    "dependencies": {
+        "jquery": ">=1.5"
+    }
+}
