@@ -112,14 +112,16 @@
         if (inputBinding.locationNameInput) {
             inputBinding.locationNameInput.val(gmapContext.locationName);
         }
-    }
-
+    } 
+ 
     function setupInputListenersInput(inputBinding, gmapContext) {
         if (inputBinding) {
             if (inputBinding.radiusInput){
 		          inputBinding.radiusInput.on("change", function() {
 		              gmapContext.radius = $(this).val();
-		              GmUtility.setPosition(gmapContext, gmapContext.location);
+		              GmUtility.setPosition(gmapContext, gmapContext.location, function(context){
+		              	context.settings.onchanged(GmUtility.locationFromLatLng(context.location), context.radius, false);
+		              });
 		          });
             }
             if (inputBinding.locationNameInput && gmapContext.settings.enableAutocomplete) {
@@ -130,10 +132,25 @@
                         gmapContext.onlocationnotfound();
                         return;
                     }
-                    GmUtility.setPosition(gmapContext, place.geometry.location, function() {
-                        updateInputValues(inputBinding, gmapContext);
+                    GmUtility.setPosition(gmapContext, place.geometry.location, function(context) {		                    
+                        updateInputValues(inputBinding, context);
+                        context.settings.onchanged(GmUtility.locationFromLatLng(context.location), context.radius, false);
                     });
                 });
+            }
+            if (inputBinding.latitudeInput) {
+            	inputBinding.latitudeInput.on("change", function() {
+            		GmUtility.setPosition(gmapContext, new google.maps.LatLng($(this).val(), gmapContext.location.lng()), function(context){
+		              	context.settings.onchanged(GmUtility.locationFromLatLng(context.location), context.radius, false);
+		            });
+            	});
+            }
+            if (inputBinding.longitudeInput) {
+            	inputBinding.longitudeInput.on("change", function() {
+            		GmUtility.setPosition(gmapContext, new google.maps.LatLng(gmapContext.location.lat(), $(this).val()), function(context){
+		              	context.settings.onchanged(GmUtility.locationFromLatLng(context.location), context.radius, false);
+		            });
+            	});
             }
         }
     }
