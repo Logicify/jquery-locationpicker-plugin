@@ -137,6 +137,10 @@
                         context.settings.onchanged(GmUtility.locationFromLatLng(context.location), context.radius, false);
                     });
                 });
+				// Prevent form from being submitted if user hit enter.
+		        inputBinding.locationNameInput.keypress(function(event){
+		            if (event.keyCode === 13){ return false; }
+		        });
             }
             if (inputBinding.latitudeInput) {
             	inputBinding.latitudeInput.on("change", function() {
