@@ -24,7 +24,7 @@ The plug-in currently uses JQuery and Google Maps. Integration is pretty simple:
 * Attach the plug-in to container: 
 ```
 <script>
-$('somecomponent').locationpicker();
+$('#somecomponent').locationpicker();
 </script>
 ```
 
