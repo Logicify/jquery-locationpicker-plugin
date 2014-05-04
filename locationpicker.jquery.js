@@ -129,7 +129,7 @@
                 google.maps.event.addListener(gmapContext.autocomplete, 'place_changed', function() {
                     var place = gmapContext.autocomplete.getPlace();
                     if (!place.geometry) {
-                        gmapContext.onlocationnotfound();
+                        gmapContext.settings.onlocationnotfound(place.name);
                         return;
                     }
                     GmUtility.setPosition(gmapContext, place.geometry.location, function(context) {		                    
@@ -137,10 +137,6 @@
                         context.settings.onchanged(GmUtility.locationFromLatLng(context.location), context.radius, false);
                     });
                 });
-				// Prevent form from being submitted if user hit enter.
-		        inputBinding.locationNameInput.keypress(function(event){
-		            if (event.keyCode === 13){ return false; }
-		        });
             }
             if (inputBinding.latitudeInput) {
             	inputBinding.latitudeInput.on("change", function() {
