@@ -129,7 +129,7 @@
                 google.maps.event.addListener(gmapContext.autocomplete, 'place_changed', function() {
                     var place = gmapContext.autocomplete.getPlace();
                     if (!place.geometry) {
-                        gmapContext.onlocationnotfound();
+                        gmapContext.settings.onlocationnotfound(place.name);
                         return;
                     }
                     GmUtility.setPosition(gmapContext, place.geometry.location, function(context) {		                    
