@@ -79,7 +79,7 @@
                 });
             } else {
                 if (callback) {
-                    callback.call(this, gmapContext);
+                    callback.call(this, gMapContext);
                 }
             }
 
