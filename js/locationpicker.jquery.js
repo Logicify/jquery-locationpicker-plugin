@@ -120,7 +120,8 @@
 		          inputBinding.radiusInput.on("change", function() {
 		              gmapContext.radius = $(this).val();
 		              GmUtility.setPosition(gmapContext, gmapContext.location, function(context){
-		              	context.settings.onchanged(GmUtility.locationFromLatLng(context.location), context.radius, false);
+		              	context.settings.onchanged.apply(gmapContext.domContainer,
+                            [GmUtility.locationFromLatLng(context.location), context.radius, false]);
 		              });
 		          });
             }
@@ -134,21 +135,24 @@
                     }
                     GmUtility.setPosition(gmapContext, place.geometry.location, function(context) {		                    
                         updateInputValues(inputBinding, context);
-                        context.settings.onchanged(GmUtility.locationFromLatLng(context.location), context.radius, false);
+                        context.settings.onchanged.apply(gmapContext.domContainer,
+                            [GmUtility.locationFromLatLng(context.location), context.radius, false]);
                     });
                 });
             }
             if (inputBinding.latitudeInput) {
             	inputBinding.latitudeInput.on("change", function() {
             		GmUtility.setPosition(gmapContext, new google.maps.LatLng($(this).val(), gmapContext.location.lng()), function(context){
-		              	context.settings.onchanged(GmUtility.locationFromLatLng(context.location), context.radius, false);
+		              	context.settings.onchanged.apply(gmapContext.domContainer,
+                            [GmUtility.locationFromLatLng(context.location), context.radius, false]);
 		            });
             	});
             }
             if (inputBinding.longitudeInput) {
             	inputBinding.longitudeInput.on("change", function() {
             		GmUtility.setPosition(gmapContext, new google.maps.LatLng(gmapContext.location.lat(), $(this).val()), function(context){
-		              	context.settings.onchanged(GmUtility.locationFromLatLng(context.location), context.radius, false);
+		              	context.settings.onchanged.apply(gmapContext.domContainer,
+                            [GmUtility.locationFromLatLng(context.location), context.radius, false]);
 		            });
             	});
             }
@@ -192,7 +196,7 @@
                      * - event: string, name of the event
                      * - callback: function, callback function to be invoked
                      */
-                    if (options == undefined) { // Getter is not available
+                    if (params == undefined) { // Getter is not available
                         return null;
                     } else {
                         var event = params.event;
@@ -203,8 +207,23 @@
                         }
                         google.maps.event.addListener(gmapContext.map, event, callback);
                     }
-
                     break;
+                case "map":
+                    /**
+                     * Returns object which allows access actual google widget and marker paced on it.
+                     * Structure: {
+                     *  map: Instance of the google map widget
+                     *  marker: marker placed on map
+                     * }
+                     */
+                    if (params == undefined) { // Getter is not available
+                        return {
+                            map: gmapContext.map,
+                            marker: gmapContext.marker
+                        }
+                    } else {
+                        return null;
+                    }
             }
             return null;
         }
@@ -233,7 +252,7 @@
             google.maps.event.addListener(gmapContext.marker, "dragend", function(event) {
                 GmUtility.setPosition(gmapContext, gmapContext.marker.position, function(context){
                     var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
-                    context.settings.onchanged(currentLocation, context.radius, true);
+                    context.settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, true]);
                     updateInputValues(gmapContext.settings.inputBinding, gmapContext);
                 });
             });
