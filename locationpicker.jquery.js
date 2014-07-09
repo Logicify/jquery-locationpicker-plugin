@@ -10,7 +10,7 @@
             position: new google.maps.LatLng(54.19335, -3.92695),
             map: _map,
             title: "Drag Me",
-            draggable: true
+            draggable: options.draggable
         });
         return {
             map: _map,
@@ -79,7 +79,7 @@
                 });
             } else {
                 if (callback) {
-                    callback.call(this, gmapContext);
+                    callback.call(this, gMapContext);
                 }
             }
 
@@ -245,7 +245,8 @@
                 streetViewControl: false,
                 radius: settings.radius,
                 locationName: settings.locationName,
-                settings: settings
+                settings: settings,
+                draggable: settings.draggable
             });
             $target.data("locationpicker", gmapContext);
             // Subscribe GMap events
@@ -278,6 +279,7 @@
         },
         enableAutocomplete: false,
         enableReverseGeocode: true,
+        draggable: true,
         onchanged: function(currentLocation, radius, isMarkerDropped) {},
         onlocationnotfound: function(locationName) {},
         oninitialized: function (component) {}
