@@ -262,9 +262,13 @@
                      * }
                      */
                     if (params == undefined) { // Getter is not available
+                        var locationObj = GmUtility.locationFromLatLng(gmapContext.location);
+                        locationObj.formattedAddress = gmapContext.locationName;
+                        locationObj.addressComponents = gmapContext.addressComponents;
                         return {
                             map: gmapContext.map,
-                            marker: gmapContext.marker
+                            marker: gmapContext.marker,
+                            location: locationObj
                         }
                     } else {
                         return null;
