@@ -309,6 +309,8 @@
             GmUtility.setPosition(gmapContext, new google.maps.LatLng(settings.location.latitude, settings.location.longitude), function(context){
                 updateInputValues(settings.inputBinding, gmapContext);
                 context.settings.oninitialized($target);
+                var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
+                settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, false]);
             });
             // Set up input bindings if needed
             setupInputListenersInput(settings.inputBinding, gmapContext);
