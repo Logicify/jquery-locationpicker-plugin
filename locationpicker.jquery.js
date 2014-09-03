@@ -101,7 +101,7 @@
         },
         address_component_from_google_geocode: function(address_components) {
             var result = {};
-            for (var i = address_components.length; i>=0; i--) {
+            for (var i = address_components.length-1; i>=0; i--) {
                 var component = address_components[i];
                 // Postal code
                 if (component.types.indexOf('postal_code') >= 0) {
