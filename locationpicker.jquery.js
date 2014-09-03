@@ -19,6 +19,16 @@
             location: _marker.position,
             radius: options.radius,
             locationName: options.locationName,
+            addressComponents: {
+                formatted_address: null,
+                addressLine1: null,
+                addressLine2: null,
+                streetName: null,
+                streetNumber: null,
+                city: null,
+                state: null,
+                stateOrProvince: null
+            },
             settings: options.settings,
             domContainer: domElement,
             geodecoder: new google.maps.Geocoder()
@@ -72,6 +82,8 @@
                 gMapContext.geodecoder.geocode({latLng: gMapContext.location}, function(results, status){
                     if (status == google.maps.GeocoderStatus.OK && results.length > 0){
                         gMapContext.locationName = results[0].formatted_address;
+                        gMapContext.addressComponents =
+                            GmUtility.address_component_from_google_geocode(results[0].address_components);
                     }
                     if (callback) {
                         callback.call(this, gMapContext);
@@ -86,8 +98,41 @@
         },
         locationFromLatLng: function(lnlg) {
             return {latitude: lnlg.lat(), longitude: lnlg.lng()}
+        },
+        address_component_from_google_geocode: function(address_components) {
+            var result = {};
+            for (var i = address_components.length; i>=0; i--) {
+                var component = address_components[i];
+                // Postal code
+                if (component.types.indexOf('postal_code') >= 0) {
+                    result.postalCode = component.short_name;
+                }
+                // Street number
+                else if (component.types.indexOf('street_number') >= 0) {
+                    result.streetNumber = component.short_name;
+                }
+                // Street name
+                else if (component.types.indexOf('route') >= 0) {
+                    result.streetName = component.short_name;
+                }
+                // City
+                else if (component.types.indexOf('sublocality') >= 0) {
+                    result.city = component.short_name;
+                }
+                // State \ Province
+                else if (component.types.indexOf('administrative_area_level_1') >= 0) {
+                    result.stateOrProvince = component.short_name;
+                }
+                // State \ Province
+                else if (component.types.indexOf('country') >= 0) {
+                    result.country = component.short_name;
+                }
+            }
+            result.addressLine1 = [result.streetNumber, result.streetName].join(' ').trim();
+            result.addressLine2 = '';
+            return result;
         }
-    }
+    };
 
     function isPluginApplied(domObj) {
         return getContextForElement(domObj) != undefined;
