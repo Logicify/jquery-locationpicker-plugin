@@ -116,7 +116,7 @@
                     result.streetName = component.short_name;
                 }
                 // City
-                else if (component.types.indexOf('sublocality') >= 0) {
+                else if (component.types.indexOf('locality') >= 0) {
                     result.city = component.short_name;
                 }
                 // State \ Province
