@@ -146,16 +146,16 @@
         if (!inputBinding) return;
         var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
         if (inputBinding.latitudeInput) {
-            inputBinding.latitudeInput.val(currentLocation.latitude);
+            inputBinding.latitudeInput.val(currentLocation.latitude).change();
         }
         if (inputBinding.longitudeInput) {
-            inputBinding.longitudeInput.val(currentLocation.longitude);
+            inputBinding.longitudeInput.val(currentLocation.longitude).change();
         }
         if (inputBinding.radiusInput) {
-            inputBinding.radiusInput.val(gmapContext.radius);
+            inputBinding.radiusInput.val(gmapContext.radius).change();
         }
         if (inputBinding.locationNameInput) {
-            inputBinding.locationNameInput.val(gmapContext.locationName);
+            inputBinding.locationNameInput.val(gmapContext.locationName).change();
         }
     }
 
