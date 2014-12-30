@@ -195,8 +195,7 @@
                         var address = $(inputBinding.locationNameInput).val();
                         if (address.length > 5 && blur) {
                             blur = false;
-                            var geocoder = new google.maps.Geocoder();
-                            geocoder.geocode({'address': address}, function(results, status) {
+                            gmapContext.geodecoder.geocode({'address': address}, function(results, status) {
                                 if(status == google.maps.GeocoderStatus.OK) {
                                     GmUtility.setPosition(gmapContext, results[0].geometry.location, function(context) {
                                         updateInputValues(inputBinding, context);
