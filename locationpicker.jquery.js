@@ -171,8 +171,10 @@
                 });
             }
             if (inputBinding.locationNameInput && gmapContext.settings.enableAutocomplete) {
+                var blur = false;
                 gmapContext.autocomplete = new google.maps.places.Autocomplete(inputBinding.locationNameInput.get(0));
                 google.maps.event.addListener(gmapContext.autocomplete, 'place_changed', function() {
+                    blur = false;
                     var place = gmapContext.autocomplete.getPlace();
                     if (!place.geometry) {
                         gmapContext.settings.onlocationnotfound(place.name);
@@ -183,6 +185,28 @@
                         context.settings.onchanged.apply(gmapContext.domContainer,
                             [GmUtility.locationFromLatLng(context.location), context.radius, false]);
                     });
+                });
+                $(inputBinding.locationNameInput)
+                .change(function() {
+                    blur = true;
+                })
+                .blur(function() {
+                    setTimeout(function() {
+                        var address = $(inputBinding.locationNameInput).val();
+                        if (address.length > 5 && blur) {
+                            blur = false;
+                            var geocoder = new google.maps.Geocoder();
+                            geocoder.geocode({'address': address}, function(results, status) {
+                                if(status == google.maps.GeocoderStatus.OK) {
+                                    GmUtility.setPosition(gmapContext, results[0].geometry.location, function(context) {
+                                        updateInputValues(inputBinding, context);
+                                        context.settings.onchanged.apply(gmapContext.domContainer,
+                                            [GmUtility.locationFromLatLng(context.location), context.radius, false]);
+                                    });
+                                }
+                            });
+                        }
+                    }, 1000);
                 });
             }
             if (inputBinding.latitudeInput) {
