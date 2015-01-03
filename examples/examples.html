@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Location picker -->
     <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
-    <script src="../locationpicker.jquery.js"></script>
+    <script src="../dist/locationpicker.jquery.js"></script>
     <title>jquery-location-picker demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -185,16 +185,23 @@ onchanged: function(currentLocation, radius, isMarkerDropped) {
             (state, postal code, etc.) which in some cases can be pretty useful.
         </p>
     <pre>
+function updateControls(addressComponents) {
+    $('#us5-street1').val(addressComponents.addressLine1);
+    $('#us5-city').val(addressComponents.city);
+    $('#us5-state').val(addressComponents.stateOrProvince);
+    $('#us5-zip').val(addressComponents.postalCode);
+    $('#us5-country').val(addressComponents.country);
+}
 $('#us5').locationpicker({
     location: {latitude: 42.00, longitude: -73.82480799999996},
     radius: 300,
     onchanged: function (currentLocation, radius, isMarkerDropped) {
         var addressComponents = $(this).locationpicker('map').location.addressComponents;
-        $('#us5-street1').val(addressComponents.addressLine1);
-        $('#us5-city').val(addressComponents.city);
-        $('#us5-state').val(addressComponents.stateOrProvince);
-        $('#us5-zip').val(addressComponents.postalCode);
-        $('#us5-country').val(addressComponents.country);
+        updateControls(addressComponents);
+    },
+    oninitialized: function(component) {
+        var addressComponents = $(component).locationpicker('map').location.addressComponents;
+        updateControls(addressComponents);
     }
 });
     </pre>
@@ -246,16 +253,23 @@ $('#us5').locationpicker({
             </div>
             <div class="clearfix"></div>
             <script>
+                function updateControls(addressComponents) {
+                    $('#us5-street1').val(addressComponents.addressLine1);
+                    $('#us5-city').val(addressComponents.city);
+                    $('#us5-state').val(addressComponents.stateOrProvince);
+                    $('#us5-zip').val(addressComponents.postalCode);
+                    $('#us5-country').val(addressComponents.country);
+                }
                 $('#us5').locationpicker({
                     location: {latitude: 42.00, longitude: -73.82480799999996},
                     radius: 300,
                     onchanged: function (currentLocation, radius, isMarkerDropped) {
                         var addressComponents = $(this).locationpicker('map').location.addressComponents;
-                        $('#us5-street1').val(addressComponents.addressLine1);
-                        $('#us5-city').val(addressComponents.city);
-                        $('#us5-state').val(addressComponents.stateOrProvince);
-                        $('#us5-zip').val(addressComponents.postalCode);
-                        $('#us5-country').val(addressComponents.country);
+                        updateControls(addressComponents);
+                    },
+                    oninitialized: function(component) {
+                        var addressComponents = $(component).locationpicker('map').location.addressComponents;
+                        updateControls(addressComponents);
                     }
                 });
             </script>

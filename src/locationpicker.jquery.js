@@ -26,6 +26,7 @@
                 streetName: null,
                 streetNumber: null,
                 city: null,
+                district: null,
                 state: null,
                 stateOrProvince: null
             },
@@ -118,6 +119,10 @@
                 // City
                 else if (component.types.indexOf('locality') >= 0) {
                     result.city = component.short_name;
+                }
+                // District
+                else if (component.types.indexOf('sublocality') >= 0) {
+                    result.district = component.short_name;
                 }
                 // State \ Province
                 else if (component.types.indexOf('administrative_area_level_1') >= 0) {
@@ -310,7 +315,7 @@
                 updateInputValues(settings.inputBinding, gmapContext);
                 context.settings.oninitialized($target);
                 var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
-                settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, false]);
+                //settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, false]);
             });
             // Set up input bindings if needed
             setupInputListenersInput(settings.inputBinding, gmapContext);
