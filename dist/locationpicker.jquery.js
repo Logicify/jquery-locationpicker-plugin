@@ -1,4 +1,4 @@
-/*! jquery-locationpicker - v0.11.0 - 2015-01-04 */
+/*! jquery-locationpicker - v0.12.0 - 2015-01-05 */
 (function($) {
     function GMapContext(domElement, options) {
         var _map = new google.maps.Map(domElement, options);
@@ -178,6 +178,12 @@
             }
         }
     }
+    function autosize(gmapContext) {
+        google.maps.event.trigger(gmapContext.map, "resize");
+        setTimeout(function() {
+            gmapContext.map.setCenter(gmapContext.marker.position);
+        }, 300);
+    }
     $.fn.locationpicker = function(options, params) {
         if (typeof options == "string") {
             var _targetDomElement = this.get(0);
@@ -227,6 +233,10 @@
                 } else {
                     return null;
                 }
+
+              case "autosize":
+                autosize(gmapContext);
+                return this;
             }
             return null;
         }
@@ -257,9 +267,8 @@
             });
             GmUtility.setPosition(gmapContext, new google.maps.LatLng(settings.location.latitude, settings.location.longitude), function(context) {
                 updateInputValues(settings.inputBinding, gmapContext);
-                context.settings.oninitialized($target);
-                var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
                 setupInputListenersInput(settings.inputBinding, gmapContext);
+                context.settings.oninitialized($target);
             });
         });
     };
