@@ -167,7 +167,8 @@
     function setupInputListenersInput(inputBinding, gmapContext) {
         if (inputBinding) {
             if (inputBinding.radiusInput){
-                inputBinding.radiusInput.on("change", function() {
+                inputBinding.radiusInput.on("change", function(e) {
+                    if (!e.originalEvent) { return }
                     gmapContext.radius = $(this).val();
                     GmUtility.setPosition(gmapContext, gmapContext.location, function(context){
                         context.settings.onchanged.apply(gmapContext.domContainer,
@@ -176,10 +177,8 @@
                 });
             }
             if (inputBinding.locationNameInput && gmapContext.settings.enableAutocomplete) {
-                var blur = false;
                 gmapContext.autocomplete = new google.maps.places.Autocomplete(inputBinding.locationNameInput.get(0));
                 google.maps.event.addListener(gmapContext.autocomplete, 'place_changed', function() {
-                    blur = false;
                     var place = gmapContext.autocomplete.getPlace();
                     if (!place.geometry) {
                         gmapContext.settings.onlocationnotfound(place.name);
@@ -191,30 +190,10 @@
                             [GmUtility.locationFromLatLng(context.location), context.radius, false]);
                     });
                 });
-                $(inputBinding.locationNameInput)
-                .change(function() {
-                    blur = true;
-                })
-                .blur(function() {
-                    setTimeout(function() {
-                        var address = $(inputBinding.locationNameInput).val();
-                        if (address.length > 5 && blur) {
-                            blur = false;
-                            gmapContext.geodecoder.geocode({'address': address}, function(results, status) {
-                                if(status == google.maps.GeocoderStatus.OK) {
-                                    GmUtility.setPosition(gmapContext, results[0].geometry.location, function(context) {
-                                        updateInputValues(inputBinding, context);
-                                        context.settings.onchanged.apply(gmapContext.domContainer,
-                                            [GmUtility.locationFromLatLng(context.location), context.radius, false]);
-                                    });
-                                }
-                            });
-                        }
-                    }, 1000);
-                });
             }
             if (inputBinding.latitudeInput) {
-                inputBinding.latitudeInput.on("change", function() {
+                inputBinding.latitudeInput.on("change", function(e) {
+                    if (!e.originalEvent) { return }
                     GmUtility.setPosition(gmapContext, new google.maps.LatLng($(this).val(), gmapContext.location.lng()), function(context){
                         context.settings.onchanged.apply(gmapContext.domContainer,
                             [GmUtility.locationFromLatLng(context.location), context.radius, false]);
@@ -222,7 +201,8 @@
                 });
             }
             if (inputBinding.longitudeInput) {
-                inputBinding.longitudeInput.on("change", function() {
+                inputBinding.longitudeInput.on("change", function(e) {
+                    if (!e.originalEvent) { return }
                     GmUtility.setPosition(gmapContext, new google.maps.LatLng(gmapContext.location.lat(), $(this).val()), function(context){
                         context.settings.onchanged.apply(gmapContext.domContainer,
                             [GmUtility.locationFromLatLng(context.location), context.radius, false]);
@@ -339,9 +319,9 @@
                 context.settings.oninitialized($target);
                 var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
                 //settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, false]);
+                // Set up input bindings if needed
+                setupInputListenersInput(settings.inputBinding, gmapContext);
             });
-            // Set up input bindings if needed
-            setupInputListenersInput(settings.inputBinding, gmapContext);
         });
     };
     $.fn.locationpicker.defaults = {
