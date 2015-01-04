@@ -1,4 +1,4 @@
-/*! jquery-locationpicker - v0.12.0 - 2015-01-05 */
+/*! jquery-locationpicker - v0.1.12 - 2015-01-05 */
 (function($) {
     function GMapContext(domElement, options) {
         var _map = new google.maps.Map(domElement, options);
