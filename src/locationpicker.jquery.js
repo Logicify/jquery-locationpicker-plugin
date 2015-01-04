@@ -212,6 +212,13 @@
         }
     }
 
+    function autosize(gmapContext) {
+        google.maps.event.trigger(gmapContext.map, 'resize');
+        setTimeout(function() {
+            gmapContext.map.setCenter(gmapContext.marker.position);
+        }, 300);
+    }
+
     /**
      * Initialization:
      *  $("#myMap").locationpicker(options);
@@ -269,7 +276,7 @@
                      *  marker: marker placed on map
                      * }
                      */
-                    if (params == undefined) { // Getter is not available
+                    if (params == undefined) { // Getter
                         var locationObj = GmUtility.locationFromLatLng(gmapContext.location);
                         locationObj.formattedAddress = gmapContext.locationName;
                         locationObj.addressComponents = gmapContext.addressComponents;
@@ -278,9 +285,12 @@
                             marker: gmapContext.marker,
                             location: locationObj
                         }
-                    } else {
+                    } else { // Setter is not available
                         return null;
                     }
+                case "autosize":
+                    autosize(gmapContext);
+                    return this;
             }
             return null;
         }
@@ -316,8 +326,6 @@
             });
             GmUtility.setPosition(gmapContext, new google.maps.LatLng(settings.location.latitude, settings.location.longitude), function(context){
                 updateInputValues(settings.inputBinding, gmapContext);
-                var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
-                //settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, false]);
                 // Set up input bindings if needed
                 setupInputListenersInput(settings.inputBinding, gmapContext);
                 context.settings.oninitialized($target);
