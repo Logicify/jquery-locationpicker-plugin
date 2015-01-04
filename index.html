@@ -43,47 +43,52 @@
 
 <div class="container">
 
-<div id="start">
-    <h1 class="starter-template">JQuery Location Picker</h1>
+    <div id="start">
+        <h1 class="starter-template">JQuery Location Picker</h1>
 
-    <div class="jumbotron" style="text-align: justify;">
-        <img src="images/basic_ui.png" align="left" style="padding: 0 15px 10px 0;">
+        <div class="jumbotron" style="text-align: justify;">
+            <img src="images/basic_ui.png" align="left" style="padding: 0 15px 10px 0;">
 
-        <p>This plug-in allows to easily find and select a location on the Google map. Along with a single point
-            selection, it <strong>allows to choose an area</strong> by providing its center and the radius. All the data
-            can be saved to any HTML input element automatically as well as be processed by Javascript (callback
-            support).</p>
+            <p>This plug-in allows to easily find and select a location on the Google map. Along with a single point
+                selection, it <strong>allows to choose an area</strong> by providing its center and the radius. All the
+                data
+                can be saved to any HTML input element automatically as well as be processed by Javascript (callback
+                support).</p>
 
-        <p>The other feature of the plug-in is <strong>automatic address resolver</strong> which allows to get address
-            line from the selected latitude and longitude. The plug-in also supports searching by address typed into the
-            bound input element which uses auto-complete feature from Google API to make the search process easier. In
-            this case the marker will be automatically positioned on the map after successful address resolution.</p>
+            <p>The other feature of the plug-in is <strong>automatic address resolver</strong> which allows to get
+                address
+                line from the selected latitude and longitude. The plug-in also supports searching by address typed into
+                the
+                bound input element which uses auto-complete feature from Google API to make the search process easier.
+                In
+                this case the marker will be automatically positioned on the map after successful address resolution.
+            </p>
 
-        <p>The plug-in currently uses JQuery and Google Maps.</p>
+            <p>The plug-in currently uses JQuery and Google Maps.</p>
 
-        <p>&nbsp;</p>
+            <p>&nbsp;</p>
 
-        <p style="text-align: center;">
-            <a class="btn btn-lg btn-success" style="padding: 15px"
-               href="https://github.com/Logicify/jquery-locationpicker-plugin" role="button">Get from GitHub</a>
-        </p>
+            <p style="text-align: center;">
+                <a class="btn btn-lg btn-success" style="padding: 15px"
+                   href="https://github.com/Logicify/jquery-locationpicker-plugin" role="button">Get from GitHub</a>
+            </p>
+        </div>
     </div>
-</div>
 
-<div id="features">
-    <h2 class="page-header">Features</h2>
-    <ul>
-        <li><strong>Doesn't require JQuery UI</strong>. The only requirements are JQuery and GoogleMaps API</li>
-        <li>Allows to pick an area with specified radius</li>
-        <li>Automatical binding to UI components (bidirectional data exchange)</li>
-        <li>Autocomplete for address input</li>
-        <li>Navigation by cordinates as well as by address</li>
-    </ul>
-</div>
+    <div id="features">
+        <h2 class="page-header">Features</h2>
+        <ul>
+            <li><strong>Doesn't require JQuery UI</strong>. The only requirements are JQuery and GoogleMaps API</li>
+            <li>Allows to pick an area with specified radius</li>
+            <li>Automatical binding to UI components (bidirectional data exchange)</li>
+            <li>Autocomplete for address input</li>
+            <li>Navigation by cordinates as well as by address</li>
+        </ul>
+    </div>
 
-<div id="usage">
-    <h2 class="page-header">Usage</h2>
-    The first step is including all requirements:
+    <div id="usage">
+        <h2 class="page-header">Usage</h2>
+        The first step is including all requirements:
 				<pre>
 &lt;head&gt;
 &lt;script src="https://code.jquery.com/jquery-1.10.2.min.js"&gt;&lt;/script&gt;
@@ -91,7 +96,7 @@
 &lt;script src="js/locationpicker.jquery.js"&gt;&lt;/script&gt;
 &lt;/head&gt;
 				</pre>
-    Basic usage without any settings:
+        Basic usage without any settings:
 <pre>
 &lt;div id="somecomponent" style="width: 500px; height: 400px;"&gt;&lt;/div&gt;
 &lt;script&gt;
@@ -99,11 +104,11 @@ $('#somecomponent').locationpicker();
 &lt;/script&gt;				
 </pre>
 
-    <p>Result</p>
+        <p>Result</p>
 
-    <div id="us0" style="width: 500px; height: 400px;"></div>
-    <script>$('#us0').locationpicker();</script>
-    <h3>Default options:</h3>
+        <div id="us0" style="width: 500px; height: 400px;"></div>
+        <script>$('#us0').locationpicker();</script>
+        <h3>Default options:</h3>
 				<pre>
 {
     location: {latitude: 40.7324319, longitude: -73.82480799999996},
@@ -121,29 +126,29 @@ $('#somecomponent').locationpicker();
     enableReverseGeocode: true,
 }
 </pre>
-    <h3 id="events">Callback methods:</h3>
-    <ul>
-        <li><strong>onchanged(currentLocation, radius, isMarkerDropped)</strong> -
-            Will be fired once location has been changed. Parameter
-            <strong>isMarkerDropped</strong> will be set to True in case when location has been set by dropping the
-            marker on map. In case when position was set from test input or using API it will be set to False
-        </li>
-        <li>
-            <strong>onlocationnotfound: function(locationName)</strong> -
-            Will be fired when it is impossible that resolve address from user input to coordinates
-        </li>
-        <li>
-            <strong>oninitialized: function (component)</strong> -
-            Will be fired after initialization and positioning marker to the initial location
-        </li>
-    </ul>
-</div>
-<div id="examples">
-<h2 class="page-header">Examples</h2>
+        <h3 id="events">Callback methods:</h3>
+        <ul>
+            <li><strong>onchanged(currentLocation, radius, isMarkerDropped)</strong> -
+                Will be fired once location has been changed. Parameter
+                <strong>isMarkerDropped</strong> will be set to True in case when location has been set by dropping the
+                marker on map. In case when position was set from test input or using API it will be set to False
+            </li>
+            <li>
+                <strong>onlocationnotfound: function(locationName)</strong> -
+                Will be fired when it is impossible that resolve address from user input to coordinates
+            </li>
+            <li>
+                <strong>oninitialized: function (component)</strong> -
+                Will be fired after initialization and positioning marker to the initial location
+            </li>
+        </ul>
+    </div>
+    <div id="examples">
+        <h2 class="page-header">Examples</h2>
 
-<p>
+        <p>
 
-<h3>Providing options</h3>
+        <h3>Providing options</h3>
 				<pre>
 &lt;div id="somecomponent" style="width: 500px; height: 400px;"&gt;&lt;/div&gt;
 &lt;script&gt;
@@ -153,15 +158,15 @@ $('#somecomponent').locationpicker({
 	});
 &lt;/script&gt;				
 				</pre>
-<p>Result</p>
+        <p>Result</p>
 
-<div id="us1" style="width: 500px; height: 400px;"></div>
-<script>$('#us1').locationpicker({
-    location: {latitude: 46.15242437752303, longitude: 2.7470703125},
-    radius: 300
-});</script>
+        <div id="us1" style="width: 500px; height: 400px;"></div>
+        <script>$('#us1').locationpicker({
+            location: {latitude: 46.15242437752303, longitude: 2.7470703125},
+            radius: 300
+        });</script>
 
-<h3>Binding UI with the widget</h3>
+        <h3>Binding UI with the widget</h3>
 				<pre>
 Location: &lt;input type="text" id="us2-address" style="width: 200px"/&gt;
 Radius: &lt;input type="text" id="us2-radius"/&gt;
@@ -180,47 +185,47 @@ Long.: &lt;input type="text" id="us2-lon"/&gt;
 	});
 &lt;/script&gt;				
 				</pre>
-<p>Result:</p>
+        <p>Result:</p>
 
-<div class="form-horizontal">
-    <div class="form-group">
-        <label class="col-sm-1 control-label">Location:</label>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">Location:</label>
 
-        <div class="col-sm-5"><input type="text" class="form-control" id="us2-address"/></div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-1 control-label">Radius:</label>
+                <div class="col-sm-5"><input type="text" class="form-control" id="us2-address"/></div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">Radius:</label>
 
-        <div class="col-sm-2"><input type="text" class="form-control" id="us2-radius"/></div>
-    </div>
-    <div id="us2" style="width: 550px; height: 400px;"></div>
-    <div class="clearfix">&nbsp;</div>
-    <div class="m-t-small">
-        <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+                <div class="col-sm-2"><input type="text" class="form-control" id="us2-radius"/></div>
+            </div>
+            <div id="us2" style="width: 550px; height: 400px;"></div>
+            <div class="clearfix">&nbsp;</div>
+            <div class="m-t-small">
+                <label class="p-r-small col-sm-1 control-label">Lat.:</label>
 
-        <div class="col-sm-1"><input type="text" class="form-control" style="width: 110px" id="us2-lat"/></div>
-        <label class="p-r-small col-sm-1 control-label">Long.:</label>
+                <div class="col-sm-1"><input type="text" class="form-control" style="width: 110px" id="us2-lat"/></div>
+                <label class="p-r-small col-sm-1 control-label">Long.:</label>
 
-        <div class="col-sm-1"><input type="text" class="form-control" style="width: 110px" id="us2-lon"/></div>
-    </div>
-    <div class="clearfix"></div>
-</div>
-<script>$('#us2').locationpicker({
-    location: {latitude: 46.15242437752303, longitude: 2.7470703125},
-    radius: 300,
-    inputBinding: {
-        latitudeInput: $('#us2-lat'),
-        longitudeInput: $('#us2-lon'),
-        radiusInput: $('#us2-radius'),
-        locationNameInput: $('#us2-address')
-    },
-    enableAutocomplete: true
-});</script>
+                <div class="col-sm-1"><input type="text" class="form-control" style="width: 110px" id="us2-lon"/></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <script>$('#us2').locationpicker({
+            location: {latitude: 46.15242437752303, longitude: 2.7470703125},
+            radius: 300,
+            inputBinding: {
+                latitudeInput: $('#us2-lat'),
+                longitudeInput: $('#us2-lon'),
+                radiusInput: $('#us2-radius'),
+                locationNameInput: $('#us2-address')
+            },
+            enableAutocomplete: true
+        });</script>
 
-<h3>Subscribing for events</h3>
+        <h3>Subscribing for events</h3>
 
-<p>The following example illustrates how to subscribe "Change" event. See the list of the available events along
-    with functions signature <a href="#events">above</a>.</p>
+        <p>The following example illustrates how to subscribe "Change" event. See the list of the available events along
+            with functions signature <a href="#events">above</a>.</p>
 				<pre>
 $('#us3').locationpicker({
 location: {latitude: 46.15242437752303, longitude: 2.7470703125},	
@@ -236,47 +241,47 @@ onchanged: function(currentLocation, radius, isMarkerDropped) {
 	alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
 }				
 				</pre>
-<div class="form-horizontal">
-    <div class="form-group">
-        <label class="col-sm-1 control-label">Location:</label>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">Location:</label>
 
-        <div class="col-sm-5"><input type="text" class="form-control" id="us3-address"/></div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-1 control-label">Radius:</label>
+                <div class="col-sm-5"><input type="text" class="form-control" id="us3-address"/></div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">Radius:</label>
 
-        <div class="col-sm-2"><input type="text" class="form-control" id="us3-radius"/></div>
-    </div>
-    <div id="us3" style="width: 550px; height: 400px;"></div>
-    <div class="clearfix">&nbsp;</div>
-    <div class="m-t-small">
-        <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+                <div class="col-sm-2"><input type="text" class="form-control" id="us3-radius"/></div>
+            </div>
+            <div id="us3" style="width: 550px; height: 400px;"></div>
+            <div class="clearfix">&nbsp;</div>
+            <div class="m-t-small">
+                <label class="p-r-small col-sm-1 control-label">Lat.:</label>
 
-        <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us3-lat"/></div>
-        <label class="p-r-small col-sm-1 control-label">Long.:</label>
+                <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us3-lat"/></div>
+                <label class="p-r-small col-sm-1 control-label">Long.:</label>
 
-        <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us3-lon"/></div>
-    </div>
-    <div class="clearfix"></div>
-    <script>$('#us3').locationpicker({
-        location: {latitude: 46.15242437752303, longitude: 2.7470703125},
-        radius: 300,
-        inputBinding: {
-            latitudeInput: $('#us3-lat'),
-            longitudeInput: $('#us3-lon'),
-            radiusInput: $('#us3-radius'),
-            locationNameInput: $('#us3-address')
-        },
-        enableAutocomplete: true,
-        onchanged: function (currentLocation, radius, isMarkerDropped) {
-            alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
-        }
-    });</script>
-</div>
-<h3>Manipulating map widget from callback</h3>
+                <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us3-lon"/></div>
+            </div>
+            <div class="clearfix"></div>
+            <script>$('#us3').locationpicker({
+                location: {latitude: 46.15242437752303, longitude: 2.7470703125},
+                radius: 300,
+                inputBinding: {
+                    latitudeInput: $('#us3-lat'),
+                    longitudeInput: $('#us3-lon'),
+                    radiusInput: $('#us3-radius'),
+                    locationNameInput: $('#us3-address')
+                },
+                enableAutocomplete: true,
+                onchanged: function (currentLocation, radius, isMarkerDropped) {
+                    alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
+                }
+            });</script>
+        </div>
+        <h3>Manipulating map widget from callback</h3>
 
-<p>If you need direct access to the actual Google Maps widget you can use <code>map</code> method as follows.
-    This example illustrates how to set zoom pragmatically each time when location has been changed.</p>
+        <p>If you need direct access to the actual Google Maps widget you can use <code>map</code> method as follows.
+            This example illustrates how to set zoom pragmatically each time when location has been changed.</p>
 				<pre>
 $('#us4').locationpicker({
 location: {latitude: 46.15242437752303, longitude: 2.7470703125},
@@ -286,25 +291,25 @@ onchanged: function(currentLocation, radius, isMarkerDropped) {
     mapContext.map.setZoom(20);
 }
 				</pre>
-<div>
-    <div id="us4" style="width: 500px; height: 400px;"></div>
-    <script>
-        $('#us4').locationpicker({
-            location: {latitude: 46.15242437752303, longitude: 2.7470703125},
-            radius: 300,
-            onchanged: function (currentLocation, radius, isMarkerDropped) {
-                var mapContext = $(this).locationpicker('map');
-                mapContext.map.setZoom(13);
-            }
-        });</script>
-</div>
+        <div>
+            <div id="us4" style="width: 500px; height: 400px;"></div>
+            <script>
+                $('#us4').locationpicker({
+                    location: {latitude: 46.15242437752303, longitude: 2.7470703125},
+                    radius: 300,
+                    onchanged: function (currentLocation, radius, isMarkerDropped) {
+                        var mapContext = $(this).locationpicker('map');
+                        mapContext.map.setZoom(13);
+                    }
+                });</script>
+        </div>
 
-<h3>Advanced usage of geo decoder features</h3>
+        <h3>Advanced usage of geo decoder features</h3>
 
-<p>
-    Along with decoded readable location name plugin returns address split on components
-    (state, postal code, etc.) which in some cases can be pretty useful.
-</p>
+        <p>
+            Along with decoded readable location name plugin returns address split on components
+            (state, postal code, etc.) which in some cases can be pretty useful.
+        </p>
     <pre>
 function updateControls(addressComponents) {
     $('#us5-street1').val(addressComponents.addressLine1);
@@ -326,87 +331,173 @@ $('#us5').locationpicker({
     }
 });
     </pre>
-<div>
-    <div class="container-fluid">
-        <div class="col-lg-6">
-            <div id="us5" style="width: 500px; height: 400px;"></div>
-            <p></p>
-        </div>
-        <div class="col-lg-6">
-            <div class="form container-fluid">
-                <div class="row form-group">
-                    <label class="col-sm-2 control-label">Street:</label>
-
-                    <div class="col-sm-6">
-                        <input class="form-control" id="us5-street1" disabled="disabled">
-                    </div>
+        <div>
+            <div class="container-fluid">
+                <div class="col-lg-6">
+                    <div id="us5" style="width: 500px; height: 400px;"></div>
+                    <p></p>
                 </div>
-                <div class="row form-group">
-                    <label class="col-sm-2 control-label">City:</label>
+                <div class="col-lg-6">
+                    <div class="form container-fluid">
+                        <div class="row form-group">
+                            <label class="col-sm-2 control-label">Street:</label>
 
-                    <div class="col-sm-6">
-                        <input class="form-control" id="us5-city" disabled="disabled">
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <label class="col-sm-2 control-label">State or Province:</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="us5-street1" disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-2 control-label">City:</label>
 
-                    <div class="col-sm-6">
-                        <input class="form-control" id="us5-state" disabled="disabled">
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <label class="col-sm-2 control-label">Postal code:</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="us5-city" disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-2 control-label">State or Province:</label>
 
-                    <div class="col-sm-6">
-                        <input class="form-control" id="us5-zip" disabled="disabled">
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <label class="col-sm-2 control-label">Country:</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="us5-state" disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-2 control-label">Postal code:</label>
 
-                    <div class="col-sm-6">
-                        <input class="form-control" id="us5-country" disabled="disabled">
+                            <div class="col-sm-6">
+                                <input class="form-control" id="us5-zip" disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-2 control-label">Country:</label>
+
+                            <div class="col-sm-6">
+                                <input class="form-control" id="us5-country" disabled="disabled">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="clearfix"></div>
+            <script>
+                function updateControls(addressComponents) {
+                    $('#us5-street1').val(addressComponents.addressLine1);
+                    $('#us5-city').val(addressComponents.city);
+                    $('#us5-state').val(addressComponents.stateOrProvince);
+                    $('#us5-zip').val(addressComponents.postalCode);
+                    $('#us5-country').val(addressComponents.country);
+                }
+                $('#us5').locationpicker({
+                    location: {latitude: 42.00, longitude: -73.82480799999996},
+                    radius: 300,
+                    onchanged: function (currentLocation, radius, isMarkerDropped) {
+                        var addressComponents = $(this).locationpicker('map').location.addressComponents;
+                        updateControls(addressComponents);
+                    },
+                    oninitialized: function (component) {
+                        var addressComponents = $(component).locationpicker('map').location.addressComponents;
+                        updateControls(addressComponents);
+                    }
+                });
+            </script>
         </div>
+
+        <h3>Using widget in modal</h3>
+        <p>
+            It is pretty common situation when you put widget into the container which is not visible during
+            initialization, e.g. modal dialog. In thins case you need to call "autosize" method each time you resize
+            container.
+        </p>
+        <pre>
+            $('#us6').locationpicker({
+                location: {latitude: 46.15242437752303, longitude: 2.7470703125},
+                radius: 300,
+                inputBinding: {
+                    latitudeInput: $('#us6-lat'),
+                    longitudeInput: $('#us6-lon'),
+                    radiusInput: $('#us6-radius'),
+                    locationNameInput: $('#us6-address')
+                },
+                enableAutocomplete: true
+            });
+            $('#us6-dialog').on('shown.bs.modal', function () {
+                $('#us6').locationpicker('autosize');
+            });
+        </pre>
+        <button data-target="#us6-dialog" data-toggle="modal">Click here to open dialog</button>
+        <div id="us6-dialog" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal" style="width: 550px">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Location:</label>
+
+                                <div class="col-sm-10"><input type="text" class="form-control" id="us6-address"/></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Radius:</label>
+
+                                <div class="col-sm-5"><input type="text" class="form-control" id="us6-radius"/></div>
+                            </div>
+                            <div id="us6" style="width: 100%; height: 400px;"></div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="m-t-small">
+                                <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+                                <div class="col-sm-3"><input type="text" class="form-control" style="width: 110px"
+                                                             id="us6-lat"/></div>
+                                <label class="p-r-small col-sm-2 control-label">Long.:</label>
+
+                                <div class="col-sm-3"><input type="text" class="form-control" style="width: 110px"
+                                                             id="us6-lon"/></div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <script>
+                                $('#us6').locationpicker({
+                                    location: {latitude: 46.15242437752303, longitude: 2.7470703125},
+                                    radius: 300,
+                                    inputBinding: {
+                                        latitudeInput: $('#us6-lat'),
+                                        longitudeInput: $('#us6-lon'),
+                                        radiusInput: $('#us6-radius'),
+                                        locationNameInput: $('#us6-address')
+                                    },
+                                    enableAutocomplete: true
+                                });
+                                $('#us6-dialog').on('shown.bs.modal', function () {
+                                    $('#us6').locationpicker('autosize');
+                                });
+                            </script>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+
+        <div>
+            <h2 class="page-header" id="credits">Credits</h2>
+            Dmitry Berezovsky, Logicify (<a href="http://logicify.com/" target="_blank">http://logicify.com/</a>)
+        </div>
+
     </div>
-    <div class="clearfix"></div>
-    <script>
-        function updateControls(addressComponents) {
-            $('#us5-street1').val(addressComponents.addressLine1);
-            $('#us5-city').val(addressComponents.city);
-            $('#us5-state').val(addressComponents.stateOrProvince);
-            $('#us5-zip').val(addressComponents.postalCode);
-            $('#us5-country').val(addressComponents.country);
-        }
-        $('#us5').locationpicker({
-            location: {latitude: 42.00, longitude: -73.82480799999996},
-            radius: 300,
-            onchanged: function (currentLocation, radius, isMarkerDropped) {
-                var addressComponents = $(this).locationpicker('map').location.addressComponents;
-                updateControls(addressComponents);
-            },
-            oninitialized: function(component) {
-                var addressComponents = $(component).locationpicker('map').location.addressComponents;
-                updateControls(addressComponents);
-            }
-        });
-    </script>
-</div>
+    <footer>
+        <p class="pull-right"><a href="#start">Back to top</a></p>
 
-<div>
-    <h2 class="page-header" id="credits">Credits</h2>
-    Dmitry Berezovsky, Logicify (<a href="http://logicify.com/" target="_blank">http://logicify.com/</a>)
-</div>
-
-</div>
-<footer>
-    <p class="pull-right"><a href="#start">Back to top</a></p>
-
-    <p><a href="http://logicify.com/" target="_blank">Logicify</a></p>
-</footer>
+        <p><a href="http://logicify.com/" target="_blank">Logicify</a></p>
+    </footer>
 </div>
 </body>
 </html>
