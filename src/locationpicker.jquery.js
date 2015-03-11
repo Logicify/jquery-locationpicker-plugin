@@ -219,8 +219,29 @@
         }, 300);
     }
 
+    function updateMap(gmapContext, $target, options) {
+        var settings = $.extend({}, $.fn.locationpicker.defaults, options ),
+            latNew = settings.location.latitude,
+            lngNew = settings.location.longitude,
+            radiusNew = settings.radius,
+            latOld = gmapContext.settings.location.latitude,
+            lngOld = gmapContext.settings.location.longitude,
+            radiusOld = gmapContext.settings.radius;
+        
+        if (latNew == latOld && lngNew == lngOld && radiusNew == radiusOld)
+        return;
+
+        gmapContext.settings.location.latitude = latNew;
+        gmapContext.settings.location.longitude = lngNew;
+        gmapContext.radius = radiusNew;
+
+        GmUtility.setPosition(gmapContext, new google.maps.LatLng(gmapContext.settings.location.latitude, gmapContext.settings.location.longitude), function(context){
+            setupInputListenersInput(gmapContext.settings.inputBinding, gmapContext);
+            context.settings.oninitialized($target);
+        });
+    }
     /**
-     * Initialization:
+     * Initializeialization:
      *  $("#myMap").locationpicker(options);
      * @param options
      * @param params
@@ -297,7 +318,10 @@
         return this.each(function() {
             var $target = $(this);
             // If plug-in hasn't been applied before - initialize, otherwise - skip
-            if (isPluginApplied(this)) return;
+            if (isPluginApplied(this)){
+              updateMap(getContextForElement(this), $(this), options);
+              return;  
+            } 
             // Plug-in initialization is required
             // Defaults
             var settings = $.extend({}, $.fn.locationpicker.defaults, options );
@@ -326,14 +350,14 @@
             });
             GmUtility.setPosition(gmapContext, new google.maps.LatLng(settings.location.latitude, settings.location.longitude), function(context){
                 updateInputValues(settings.inputBinding, gmapContext);
-                // Set up input bindings if needed
+                // Set  input bindings if needed
                 setupInputListenersInput(settings.inputBinding, gmapContext);
                 context.settings.oninitialized($target);
             });
         });
     };
     $.fn.locationpicker.defaults = {
-        location: {latitude: 40.7324319, longitude: -73.82480799999996},
+        location: {latitude: 40.7324319, longitude: -73.82480777777776},
         locationName: "",
         radius: 500,
         zoom: 15,
@@ -350,7 +374,5 @@
         onchanged: function(currentLocation, radius, isMarkerDropped) {},
         onlocationnotfound: function(locationName) {},
         oninitialized: function (component) {}
-
     }
-
 }( jQuery ));
