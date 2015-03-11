@@ -177,8 +177,10 @@
                 });
             }
             if (inputBinding.locationNameInput && gmapContext.settings.enableAutocomplete) {
+                var blur = false;
                 gmapContext.autocomplete = new google.maps.places.Autocomplete(inputBinding.locationNameInput.get(0));
                 google.maps.event.addListener(gmapContext.autocomplete, 'place_changed', function() {
+                    blur = false;
                     var place = gmapContext.autocomplete.getPlace();
                     if (!place.geometry) {
                         gmapContext.settings.onlocationnotfound(place.name);
@@ -190,6 +192,30 @@
                             [GmUtility.locationFromLatLng(context.location), context.radius, false]);
                     });
                 });
+                if(gmapContext.settings.enableAutocompleteBlur) {
+                  inputBinding.locationNameInput.on("change", function(e) {
+                    if (!e.originalEvent) { return }
+                    blur = true;
+                  });
+                  inputBinding.locationNameInput.on("blur", function(e) {
+                    if (!e.originalEvent) { return }
+                    setTimeout(function() {
+                        var address = $(inputBinding.locationNameInput).val();
+                        if (address.length > 5 && blur) {
+                            blur = false;
+                            gmapContext.geodecoder.geocode({'address': address}, function(results, status) {
+                                if(status == google.maps.GeocoderStatus.OK  && results && results.length) {
+                                    GmUtility.setPosition(gmapContext, results[0].geometry.location, function(context) {
+                                        updateInputValues(inputBinding, context);
+                                        context.settings.onchanged.apply(gmapContext.domContainer,
+                                            [GmUtility.locationFromLatLng(context.location), context.radius, false]);
+                                    });
+                                }
+                            });
+                        }
+                    }, 1000);
+                  });
+                }
             }
             if (inputBinding.latitudeInput) {
                 inputBinding.latitudeInput.on("change", function(e) {
@@ -369,6 +395,7 @@
             locationNameInput: null
         },
         enableAutocomplete: false,
+        enableAutocompleteBlur: false,
         enableReverseGeocode: true,
         draggable: true,
         onchanged: function(currentLocation, radius, isMarkerDropped) {},
