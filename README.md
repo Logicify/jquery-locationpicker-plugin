@@ -15,6 +15,7 @@ The plug-in requires [jQuery](http://jquery.com/) and the [Google Maps API](http
 * Add jQuery and Google Maps API to the `<head>` of your HTML file:
 ```
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+// be careful to include the parameter "libraries=places"
 <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
 <script src="js/locationpicker.jquery.js"></script>
 ```
@@ -39,4 +40,6 @@ Documentation along with examples available [here](http://logicify.github.io/jqu
 
 Credits
 -------
-Dmitry Berezovsky, Logicify (<http://logicify.com/>)
+Dmitry Berezovsky, Logicify (<http://logicify.com/>)  
+Emanuele Coppola, Libre sc (<http://libreidee.com/>)
+
