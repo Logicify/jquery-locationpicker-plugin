@@ -42,3 +42,4 @@ Credits
 -------
 Dmitry Berezovsky, Logicify (<http://logicify.com/>)
 Emanuele Coppola, Libre sc (<http://libreidee.com/>)
+
