@@ -10,7 +10,8 @@
             position: new google.maps.LatLng(54.19335, -3.92695),
             map: _map,
             title: "Drag Me",
-            draggable: options.draggable
+            draggable: options.draggable,
+            icon: (options.markerIcon !== undefined) ? options.markerIcon : undefined
         });
         return {
             map: _map,
@@ -253,7 +254,7 @@
             latOld = gmapContext.settings.location.latitude,
             lngOld = gmapContext.settings.location.longitude,
             radiusOld = gmapContext.settings.radius;
-        
+
         if (latNew == latOld && lngNew == lngOld && radiusNew == radiusOld)
         return;
 
@@ -346,8 +347,8 @@
             // If plug-in hasn't been applied before - initialize, otherwise - skip
             if (isPluginApplied(this)){
               updateMap(getContextForElement(this), $(this), options);
-              return;  
-            } 
+              return;
+            }
             // Plug-in initialization is required
             // Defaults
             var settings = $.extend({}, $.fn.locationpicker.defaults, options );
@@ -363,7 +364,8 @@
                 radius: settings.radius,
                 locationName: settings.locationName,
                 settings: settings,
-                draggable: settings.draggable
+                draggable: settings.draggable,
+                markerIcon: settings.markerIcon
             });
             $target.data("locationpicker", gmapContext);
             // Subscribe GMap events
@@ -400,6 +402,8 @@
         draggable: true,
         onchanged: function(currentLocation, radius, isMarkerDropped) {},
         onlocationnotfound: function(locationName) {},
-        oninitialized: function (component) {}
+        oninitialized: function (component) {},
+        // must be undefined to use the default gMaps marker
+        markerIcon: undefined
     }
 }( jQuery ));
