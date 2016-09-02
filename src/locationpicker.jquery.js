@@ -356,7 +356,7 @@
             var gmapContext = new GMapContext(this, {
                 zoom: settings.zoom,
                 center: new google.maps.LatLng(settings.location.latitude, settings.location.longitude),
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                mapTypeId: settings.mapTypeId,
                 mapTypeControl: false,
                 disableDoubleClickZoom: false,
                 scrollwheel: settings.scrollwheel,
@@ -389,6 +389,7 @@
         locationName: "",
         radius: 500,
         zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
         scrollwheel: true,
         inputBinding: {
             latitudeInput: null,
