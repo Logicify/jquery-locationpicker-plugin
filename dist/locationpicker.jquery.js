@@ -60,17 +60,7 @@
             gMapContext.map.panTo(location);
             this.drawCircle(gMapContext, location, gMapContext.radius, {});
             if (gMapContext.settings.enableReverseGeocode) {
-                gMapContext.geodecoder.geocode({
-                    latLng: gMapContext.location
-                }, function(results, status) {
-                    if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
-                        gMapContext.locationName = results[0].formatted_address;
-                        gMapContext.addressComponents = GmUtility.address_component_from_google_geocode(results[0].address_components);
-                    }
-                    if (callback) {
-                        callback.call(this, gMapContext);
-                    }
-                });
+                this.updateLocationName(gMapContext, callback);
             } else {
                 if (callback) {
                     callback.call(this, gMapContext);
@@ -82,6 +72,19 @@
                 latitude: lnlg.lat(),
                 longitude: lnlg.lng()
             };
+        },
+        updateLocationName: function(gmapContext, callback) {
+            gmapContext.geodecoder.geocode({
+                latLng: gmapContext.marker.position
+            }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
+                    gmapContext.locationName = results[0].formatted_address;
+                    gmapContext.addressComponents = GmUtility.address_component_from_google_geocode(results[0].address_components);
+                }
+                if (callback) {
+                    callback.call(this, gmapContext);
+                }
+            });
         },
         address_component_from_google_geocode: function(address_components) {
             var result = {};
@@ -116,7 +119,7 @@
     }
     function updateInputValues(inputBinding, gmapContext) {
         if (!inputBinding) return;
-        var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
+        var currentLocation = GmUtility.locationFromLatLng(gmapContext.marker.position);
         if (inputBinding.latitudeInput) {
             inputBinding.latitudeInput.val(currentLocation.latitude).change();
         }
@@ -306,6 +309,12 @@
                 markerIcon: settings.markerIcon
             });
             $target.data("locationpicker", gmapContext);
+            google.maps.event.addListener(gmapContext.marker, "drag", function(event) {
+                updateInputValues(gmapContext.settings.inputBinding, gmapContext);
+                if (gmapContext.settings.inputBinding.locationNameInput) {
+                    GmUtility.updateLocationName(gmapContext);
+                }
+            });
             google.maps.event.addListener(gmapContext.marker, "dragend", function(event) {
                 GmUtility.setPosition(gmapContext, gmapContext.marker.position, function(context) {
                     var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
