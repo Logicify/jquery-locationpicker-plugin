@@ -358,6 +358,7 @@
                 center: new google.maps.LatLng(settings.location.latitude, settings.location.longitude),
                 mapTypeId: settings.mapTypeId,
                 mapTypeControl: false,
+                styles: settings.styles,
                 disableDoubleClickZoom: false,
                 scrollwheel: settings.scrollwheel,
                 streetViewControl: false,
@@ -390,6 +391,7 @@
         radius: 500,
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: [],
         scrollwheel: true,
         inputBinding: {
             latitudeInput: null,
