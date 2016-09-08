@@ -10,6 +10,7 @@
             position: new google.maps.LatLng(54.19335, -3.92695),
             map: _map,
             title: "Drag Me",
+            visible: options.markerVisible,
             draggable: options.markerDraggable,
             icon: (options.markerIcon !== undefined) ? options.markerIcon : undefined
         });
@@ -371,7 +372,8 @@
                 settings: settings,
                 draggable: settings.draggable,
                 markerIcon: settings.markerIcon,
-                markerDraggable: settings.markerDraggable
+                markerDraggable: settings.markerDraggable,
+                markerVisible: settings.markerVisible
             });
             $target.data("locationpicker", gmapContext);
             // Subscribe GMap events
@@ -419,6 +421,7 @@
         oninitialized: function (component) {},
         // must be undefined to use the default gMaps marker
         markerIcon: undefined,
-        markerDraggable: true
+        markerDraggable: true,
+        markerVisible : true
     }
 }( jQuery ));
