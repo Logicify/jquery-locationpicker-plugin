@@ -10,7 +10,7 @@
             position: new google.maps.LatLng(54.19335, -3.92695),
             map: _map,
             title: "Drag Me",
-            draggable: options.draggable,
+            draggable: options.markerDraggable,
             icon: (options.markerIcon !== undefined) ? options.markerIcon : undefined
         });
         return {
@@ -370,7 +370,8 @@
                 locationName: settings.locationName,
                 settings: settings,
                 draggable: settings.draggable,
-                markerIcon: settings.markerIcon
+                markerIcon: settings.markerIcon,
+                markerDraggable: settings.markerDraggable
             });
             $target.data("locationpicker", gmapContext);
             // Subscribe GMap events
@@ -417,6 +418,7 @@
         onlocationnotfound: function(locationName) {},
         oninitialized: function (component) {},
         // must be undefined to use the default gMaps marker
-        markerIcon: undefined
+        markerIcon: undefined,
+        markerDraggable: true
     }
 }( jQuery ));

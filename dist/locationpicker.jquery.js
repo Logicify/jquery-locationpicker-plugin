@@ -1,4 +1,4 @@
-/*! jquery-locationpicker - v0.1.13 - 2016-09-02 */
+/*! jquery-locationpicker - v0.1.13 - 2016-09-07 */
 (function($) {
     function GMapContext(domElement, options) {
         var _map = new google.maps.Map(domElement, options);
@@ -6,7 +6,7 @@
             position: new google.maps.LatLng(54.19335, -3.92695),
             map: _map,
             title: "Drag Me",
-            draggable: options.draggable,
+            draggable: options.markerDraggable,
             icon: options.markerIcon !== undefined ? options.markerIcon : undefined
         });
         return {
@@ -306,7 +306,8 @@
                 locationName: settings.locationName,
                 settings: settings,
                 draggable: settings.draggable,
-                markerIcon: settings.markerIcon
+                markerIcon: settings.markerIcon,
+                markerDraggable: settings.markerDraggable
             });
             $target.data("locationpicker", gmapContext);
             google.maps.event.addListener(gmapContext.marker, "drag", function(event) {
@@ -353,6 +354,7 @@
         onchanged: function(currentLocation, radius, isMarkerDropped) {},
         onlocationnotfound: function(locationName) {},
         oninitialized: function(component) {},
-        markerIcon: undefined
+        markerIcon: undefined,
+        markerDraggable: true
     };
 })(jQuery);
