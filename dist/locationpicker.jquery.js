@@ -1,4 +1,4 @@
-/*! jquery-locationpicker - v0.1.13 - 2016-09-08 */
+/*! jquery-locationpicker - v0.1.13 - 2016-09-12 */
 (function($) {
     function GMapContext(domElement, options) {
         var _map = new google.maps.Map(domElement, options);
@@ -149,7 +149,7 @@
             }
             if (inputBinding.locationNameInput && gmapContext.settings.enableAutocomplete) {
                 var blur = false;
-                gmapContext.autocomplete = new google.maps.places.Autocomplete(inputBinding.locationNameInput.get(0));
+                gmapContext.autocomplete = new google.maps.places.Autocomplete(inputBinding.locationNameInput.get(0), gmapContext.settings.autocompleteOptions);
                 google.maps.event.addListener(gmapContext.autocomplete, "place_changed", function() {
                     blur = false;
                     var place = gmapContext.autocomplete.getPlace();
@@ -306,6 +306,7 @@
                 radius: settings.radius,
                 locationName: settings.locationName,
                 settings: settings,
+                autocompleteOptions: settings.autocompleteOptions,
                 draggable: settings.draggable,
                 markerIcon: settings.markerIcon,
                 markerDraggable: settings.markerDraggable,
@@ -351,6 +352,7 @@
         },
         enableAutocomplete: false,
         enableAutocompleteBlur: false,
+        autocompleteOptions: null,
         enableReverseGeocode: true,
         draggable: true,
         onchanged: function(currentLocation, radius, isMarkerDropped) {},
