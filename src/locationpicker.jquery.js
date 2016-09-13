@@ -378,18 +378,34 @@
             });
             $target.data("locationpicker", gmapContext);
             // Subscribe GMap events
-            google.maps.event.addListener(gmapContext.marker, "drag", function(event) {
-                updateInputValues(gmapContext.settings.inputBinding, gmapContext);
-                if(gmapContext.settings.inputBinding.locationNameInput){
-                    GmUtility.updateLocationName(gmapContext);
-                }
-            });
-            google.maps.event.addListener(gmapContext.marker, "dragend", function(event) {
-                GmUtility.setPosition(gmapContext, gmapContext.marker.position, function(context){
+            function displayMarkerWithSelectedArea() {
+                GmUtility.setPosition(gmapContext, gmapContext.marker.position, function (context) {
                     var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
                     context.settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, true]);
                     updateInputValues(gmapContext.settings.inputBinding, gmapContext);
                 });
+            }
+            if (settings.markerInCenter) {
+                gmapContext.map.addListener("bounds_changed", function () {
+                    if (!gmapContext.marker.dragging) {
+                        gmapContext.marker.setPosition(gmapContext.map.center);
+                        updateInputValues(gmapContext.settings.inputBinding, gmapContext);
+                    }
+                });
+                gmapContext.map.addListener("idle", function () {
+                    if (!gmapContext.marker.dragging) {
+                        displayMarkerWithSelectedArea();
+                    }
+                });
+            }
+            google.maps.event.addListener(gmapContext.marker, "drag", function(event) {
+                if (gmapContext.settings.inputBinding.locationNameInput){
+                    GmUtility.updateLocationName(gmapContext);
+                }
+                updateInputValues(gmapContext.settings.inputBinding, gmapContext);
+            });
+            google.maps.event.addListener(gmapContext.marker, "dragend", function(event) {
+                displayMarkerWithSelectedArea();
             });
             GmUtility.setPosition(gmapContext, new google.maps.LatLng(settings.location.latitude, settings.location.longitude), function(context){
                 updateInputValues(settings.inputBinding, gmapContext);
