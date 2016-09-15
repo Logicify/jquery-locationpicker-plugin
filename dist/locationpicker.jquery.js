@@ -1,4 +1,4 @@
-/*! jquery-locationpicker - v0.1.13 - 2016-09-13 */
+/*! jquery-locationpicker - v0.1.13 - 2016-09-15 */
 (function($) {
     function GMapContext(domElement, options) {
         var _map = new google.maps.Map(domElement, options);
@@ -74,13 +74,23 @@
                 longitude: lnlg.lng()
             };
         },
+        addressByFormat: function(addresses, format) {
+            var result = null;
+            for (var i = addresses.length - 1; i >= 0; i--) {
+                if (addresses[i].types.indexOf(format) >= 0) {
+                    result = addresses[i];
+                }
+            }
+            return result || addresses[0];
+        },
         updateLocationName: function(gmapContext, callback) {
             gmapContext.geodecoder.geocode({
                 latLng: gmapContext.marker.position
             }, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
-                    gmapContext.locationName = results[0].formatted_address;
-                    gmapContext.addressComponents = GmUtility.address_component_from_google_geocode(results[0].address_components);
+                    var address = GmUtility.addressByFormat(results, gmapContext.settings.addressFormat);
+                    gmapContext.locationName = address.formatted_address;
+                    gmapContext.addressComponents = GmUtility.address_component_from_google_geocode(address.address_components);
                 }
                 if (callback) {
                     callback.call(this, gmapContext);
@@ -307,6 +317,7 @@
                 locationName: settings.locationName,
                 settings: settings,
                 autocompleteOptions: settings.autocompleteOptions,
+                addressFormat: settings.addressFormat,
                 draggable: settings.draggable,
                 markerIcon: settings.markerIcon,
                 markerDraggable: settings.markerDraggable,
@@ -369,6 +380,7 @@
         enableAutocomplete: false,
         enableAutocompleteBlur: false,
         autocompleteOptions: null,
+        addressFormat: "postal_code",
         enableReverseGeocode: true,
         draggable: true,
         onchanged: function(currentLocation, radius, isMarkerDropped) {},
