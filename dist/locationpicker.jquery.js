@@ -209,6 +209,7 @@
                     }
                     GmUtility.setPosition(gmapContext, new google.maps.LatLng($(this).val(), gmapContext.location.lng()), function(context) {
                         context.settings.onchanged.apply(gmapContext.domContainer, [ GmUtility.locationFromLatLng(context.location), context.radius, false ]);
+                        updateInputValues(gmapContext.settings.inputBinding, gmapContext);
                     });
                 });
             }
@@ -219,6 +220,7 @@
                     }
                     GmUtility.setPosition(gmapContext, new google.maps.LatLng(gmapContext.location.lat(), $(this).val()), function(context) {
                         context.settings.onchanged.apply(gmapContext.domContainer, [ GmUtility.locationFromLatLng(context.location), context.radius, false ]);
+                        updateInputValues(gmapContext.settings.inputBinding, gmapContext);
                     });
                 });
             }
