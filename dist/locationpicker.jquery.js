@@ -1,4 +1,4 @@
-/*! jquery-locationpicker - v0.1.13 - 2016-09-15 */
+/*! jquery-locationpicker - v0.1.13 - 2016-09-16 */
 (function($) {
     function GMapContext(domElement, options) {
         var _map = new google.maps.Map(domElement, options);
@@ -327,8 +327,8 @@
             function displayMarkerWithSelectedArea() {
                 GmUtility.setPosition(gmapContext, gmapContext.marker.position, function(context) {
                     var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
-                    context.settings.onchanged.apply(gmapContext.domContainer, [ currentLocation, context.radius, true ]);
                     updateInputValues(gmapContext.settings.inputBinding, gmapContext);
+                    context.settings.onchanged.apply(gmapContext.domContainer, [ currentLocation, context.radius, true ]);
                 });
             }
             if (settings.markerInCenter) {

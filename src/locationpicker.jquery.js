@@ -392,8 +392,8 @@
             function displayMarkerWithSelectedArea() {
                 GmUtility.setPosition(gmapContext, gmapContext.marker.position, function (context) {
                     var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
-                    context.settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, true]);
                     updateInputValues(gmapContext.settings.inputBinding, gmapContext);
+                    context.settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, true]);
                 });
             }
             if (settings.markerInCenter) {
