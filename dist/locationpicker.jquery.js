@@ -347,9 +347,6 @@
                 });
             }
             google.maps.event.addListener(gmapContext.marker, "drag", function(event) {
-                if (gmapContext.settings.inputBinding.locationNameInput) {
-                    GmUtility.updateLocationName(gmapContext);
-                }
                 updateInputValues(gmapContext.settings.inputBinding, gmapContext);
             });
             google.maps.event.addListener(gmapContext.marker, "dragend", function(event) {
