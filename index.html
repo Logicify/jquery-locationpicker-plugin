@@ -91,17 +91,17 @@
         The first step is including all requirements:
 				<pre>
 &lt;head&gt;
-&lt;script src="https://code.jquery.com/jquery-1.10.2.min.js"&gt;&lt;/script&gt;
-&lt;script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'&gt;&lt;/script&gt;
-&lt;script src="js/locationpicker.jquery.js"&gt;&lt;/script&gt;
+    &lt;script src="https://code.jquery.com/jquery-1.10.2.min.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'&gt;&lt;/script&gt;
+    &lt;script src="js/locationpicker.jquery.js"&gt;&lt;/script&gt;
 &lt;/head&gt;
 				</pre>
         Basic usage without any settings:
 <pre>
 &lt;div id="somecomponent" style="width: 500px; height: 400px;"&gt;&lt;/div&gt;
 &lt;script&gt;
-$('#somecomponent').locationpicker();
-&lt;/script&gt;				
+    $('#somecomponent').locationpicker();
+&lt;/script&gt;
 </pre>
 
         <p>Result</p>
@@ -111,10 +111,15 @@ $('#somecomponent').locationpicker();
         <h3>Default options:</h3>
 				<pre>
 {
-    location: {latitude: 40.7324319, longitude: -73.82480799999996},
+    location: {
+        latitude: 40.7324319,
+        longitude: -73.82480777777776
+    },
     locationName: "",
     radius: 500,
     zoom: 15,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    styles: [],
     scrollwheel: true,
     inputBinding: {
         latitudeInput: null,
@@ -123,7 +128,14 @@ $('#somecomponent').locationpicker();
         locationNameInput: null
     },
     enableAutocomplete: false,
+    enableAutocompleteBlur: false,
+    autocompleteOptions: null,
+    addressFormat: 'postal_code',
     enableReverseGeocode: true,
+    draggable: true,
+    markerIcon: undefined,
+    markerDraggable: true,
+    markerVisible : true
 }
 </pre>
         <h3 id="events">Callback methods:</h3>
@@ -148,178 +160,557 @@ $('#somecomponent').locationpicker();
 
         <p>
 
-        <h3>Providing options</h3>
-				<pre>
+            <script>
+                function toggleElement(name) {
+                    $('#' + name + '-example').toggle('fast', function () {
+                        $('#' + name).locationpicker('autosize');
+                    });
+                }
+            </script>
+
+
+        <h3 onclick="toggleElement('us1')">Providing options</h3>
+        <div id="us1-example" hidden>
+            <pre>
 &lt;div id="somecomponent" style="width: 500px; height: 400px;"&gt;&lt;/div&gt;
 &lt;script&gt;
-$('#somecomponent').locationpicker({
-	location: {latitude: 46.15242437752303, longitude: 2.7470703125},
-	radius: 300
-	});
-&lt;/script&gt;				
+    $('#somecomponent').locationpicker({
+        location: {
+            latitude: 46.15242437752303,
+            longitude: 2.7470703125
+        },
+        radius: 300
+    });
+&lt;/script&gt;
 				</pre>
-        <p>Result</p>
+            <p>Result</p>
 
-        <div id="us1" style="width: 500px; height: 400px;"></div>
-        <script>$('#us1').locationpicker({
-            location: {latitude: 46.15242437752303, longitude: 2.7470703125},
-            radius: 300
-        });</script>
+            <div id="us1" style="width: 500px; height: 400px;"></div>
+            <script>
+                $('#us1').locationpicker({
+                    location: {
+                        latitude: 46.15242437752303,
+                        longitude: 2.7470703125
+                    },
+                    radius: 300
+                });
+            </script>
+        </div>
 
-        <h3>Binding UI with the widget</h3>
-				<pre>
+        <h3 onclick="toggleElement('us2')">Binding UI with the widget</h3>
+        <div id="us2-example" hidden>
+
+            <pre>
 Location: &lt;input type="text" id="us2-address" style="width: 200px"/&gt;
 Radius: &lt;input type="text" id="us2-radius"/&gt;
-&lt;div id="us2" style="width: 500px; height: 400px;">&lt;/div&gt;				
+&lt;div id="us2" style="width: 500px; height: 400px;">&lt;/div&gt;
 Lat.: &lt;input type="text" id="us2-lat"/&gt;
 Long.: &lt;input type="text" id="us2-lon"/&gt;
-&lt;script>$('#us2').locationpicker({
-	location: {latitude: 46.15242437752303, longitude: 2.7470703125},	
-	radius: 300,
-	inputBinding: {
-        latitudeInput: $('#us2-lat'),
-        longitudeInput: $('#us2-lon'),
-        radiusInput: $('#us2-radius'),
-        locationNameInput: $('#us2-address')
-    }
-	});
-&lt;/script&gt;				
+&lt;script>
+    $('#us2').locationpicker({
+        location: {
+            latitude: 46.15242437752303,
+            longitude: 2.7470703125
+        },
+        radius: 300,
+        inputBinding: {
+            latitudeInput: $('#us2-lat'),
+            longitudeInput: $('#us2-lon'),
+            radiusInput: $('#us2-radius'),
+            locationNameInput: $('#us2-address')
+        }
+    });
+&lt;/script&gt;
 				</pre>
-        <p>Result:</p>
+            <p>Result:</p>
 
-        <div class="form-horizontal">
-            <div class="form-group">
-                <label class="col-sm-1 control-label">Location:</label>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Location:</label>
 
-                <div class="col-sm-5"><input type="text" class="form-control" id="us2-address"/></div>
+                    <div class="col-sm-5"><input type="text" class="form-control" id="us2-address"/></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Radius:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" id="us2-radius"/></div>
+                </div>
+                <div id="us2" style="width: 550px; height: 400px;"></div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="m-t-small">
+                    <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+                    <div class="col-sm-1"><input type="text" class="form-control" style="width: 110px" id="us2-lat"/>
+                    </div>
+                    <label class="p-r-small col-sm-1 control-label">Long.:</label>
+
+                    <div class="col-sm-1"><input type="text" class="form-control" style="width: 110px" id="us2-lon"/>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-1 control-label">Radius:</label>
-
-                <div class="col-sm-2"><input type="text" class="form-control" id="us2-radius"/></div>
-            </div>
-            <div id="us2" style="width: 550px; height: 400px;"></div>
-            <div class="clearfix">&nbsp;</div>
-            <div class="m-t-small">
-                <label class="p-r-small col-sm-1 control-label">Lat.:</label>
-
-                <div class="col-sm-1"><input type="text" class="form-control" style="width: 110px" id="us2-lat"/></div>
-                <label class="p-r-small col-sm-1 control-label">Long.:</label>
-
-                <div class="col-sm-1"><input type="text" class="form-control" style="width: 110px" id="us2-lon"/></div>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <script>$('#us2').locationpicker({
-            location: {latitude: 46.15242437752303, longitude: 2.7470703125},
-            radius: 300,
-            inputBinding: {
-                latitudeInput: $('#us2-lat'),
-                longitudeInput: $('#us2-lon'),
-                radiusInput: $('#us2-radius'),
-                locationNameInput: $('#us2-address')
-            },
-            enableAutocomplete: true
-        });</script>
-
-        <h3>Subscribing for events</h3>
-
-        <p>The following example illustrates how to subscribe "Change" event. See the list of the available events along
-            with functions signature <a href="#events">above</a>.</p>
-				<pre>
-$('#us3').locationpicker({
-location: {latitude: 46.15242437752303, longitude: 2.7470703125},	
-radius: 300,
-inputBinding: {
-	latitudeInput: $('#us3-lat'),
-	longitudeInput: $('#us3-lon'),
-	radiusInput: $('#us3-radius'),
-	locationNameInput: $('#us3-address')        
-},
-enableAutocomplete: true,
-onchanged: function(currentLocation, radius, isMarkerDropped) {
-	alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
-}				
-				</pre>
-        <div class="form-horizontal">
-            <div class="form-group">
-                <label class="col-sm-1 control-label">Location:</label>
-
-                <div class="col-sm-5"><input type="text" class="form-control" id="us3-address"/></div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-1 control-label">Radius:</label>
-
-                <div class="col-sm-2"><input type="text" class="form-control" id="us3-radius"/></div>
-            </div>
-            <div id="us3" style="width: 550px; height: 400px;"></div>
-            <div class="clearfix">&nbsp;</div>
-            <div class="m-t-small">
-                <label class="p-r-small col-sm-1 control-label">Lat.:</label>
-
-                <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us3-lat"/></div>
-                <label class="p-r-small col-sm-1 control-label">Long.:</label>
-
-                <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us3-lon"/></div>
-            </div>
-            <div class="clearfix"></div>
-            <script>$('#us3').locationpicker({
-                location: {latitude: 46.15242437752303, longitude: 2.7470703125},
-                radius: 300,
-                inputBinding: {
-                    latitudeInput: $('#us3-lat'),
-                    longitudeInput: $('#us3-lon'),
-                    radiusInput: $('#us3-radius'),
-                    locationNameInput: $('#us3-address')
-                },
-                enableAutocomplete: true,
-                onchanged: function (currentLocation, radius, isMarkerDropped) {
-                    alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
-                }
-            });</script>
-        </div>
-        <h3>Manipulating map widget from callback</h3>
-
-        <p>If you need direct access to the actual Google Maps widget you can use <code>map</code> method as follows.
-            This example illustrates how to set zoom pragmatically each time when location has been changed.</p>
-				<pre>
-$('#us4').locationpicker({
-location: {latitude: 46.15242437752303, longitude: 2.7470703125},
-radius: 300,
-onchanged: function(currentLocation, radius, isMarkerDropped) {
-    var mapContext = $(this).locationpicker('map');
-    mapContext.map.setZoom(20);
-}
-				</pre>
-        <div>
-            <div id="us4" style="width: 500px; height: 400px;"></div>
             <script>
-                $('#us4').locationpicker({
+                $('#us2').locationpicker({
                     location: {latitude: 46.15242437752303, longitude: 2.7470703125},
                     radius: 300,
-                    onchanged: function (currentLocation, radius, isMarkerDropped) {
-                        var mapContext = $(this).locationpicker('map');
-                        mapContext.map.setZoom(13);
-                    }
-                });</script>
+                    inputBinding: {
+                        latitudeInput: $('#us2-lat'),
+                        longitudeInput: $('#us2-lon'),
+                        radiusInput: $('#us2-radius'),
+                        locationNameInput: $('#us2-address')
+                    },
+                    enableAutocomplete: true
+                });
+            </script>
         </div>
 
-        <h3>Advanced usage of geo decoder features</h3>
+        <h3 onclick="toggleElement('us3')">Subscribing for events</h3>
+        <div id="us3-example" hidden>
+            <p>The following example illustrates how to subscribe "Change" event. See the list of the available events
+                along
+                with functions signature <a href="#events">above</a>.</p>
+				<pre>
+$('#us3').locationpicker({
+    location: {
+        latitude: 46.15242437752303,
+        longitude: 2.7470703125
+    },
+    radius: 300,
+    inputBinding: {
+        latitudeInput: $('#us3-lat'),
+        longitudeInput: $('#us3-lon'),
+        radiusInput: $('#us3-radius'),
+        locationNameInput: $('#us3-address')
+    },
+    enableAutocomplete: true,
+    onchanged: function (currentLocation, radius, isMarkerDropped) {
+        alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
+    }
+});
+				</pre>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Location:</label>
 
-        <p>
-            Along with decoded readable location name plugin returns address split on components
-            (state, postal code, etc.) which in some cases can be pretty useful.
-        </p>
+                    <div class="col-sm-5"><input type="text" class="form-control" id="us3-address"/></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Radius:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" id="us3-radius"/></div>
+                </div>
+                <div id="us3" style="width: 550px; height: 400px;"></div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="m-t-small">
+                    <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us3-lat"/>
+                    </div>
+                    <label class="p-r-small col-sm-1 control-label">Long.:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us3-lon"/>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <script>
+                    $('#us3').locationpicker({
+                        location: {
+                            latitude: 46.15242437752303,
+                            longitude: 2.7470703125
+                        },
+                        radius: 300,
+                        inputBinding: {
+                            latitudeInput: $('#us3-lat'),
+                            longitudeInput: $('#us3-lon'),
+                            radiusInput: $('#us3-radius'),
+                            locationNameInput: $('#us3-address')
+                        },
+                        enableAutocomplete: true,
+                        onchanged: function (currentLocation, radius, isMarkerDropped) {
+                            alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+
+        <h3 onclick="toggleElement('us4')">Change mapTypeId</h3>
+        <div id="us4-example" hidden>
+            <p>You can set one of the <code>google.maps.MapTypeId</code> value. Google Maps provides four map types:
+                <code>HYBRID</code>, <code>ROADMAP</code>, <code>SATELLITE</code> and <code>TERRAIN</code></p>
+				<pre>
+$('#us4').locationpicker({
+    location: {
+        latitude: 46.15242437752303,
+        longitude: 2.7470703125
+    },
+    radius: 300,
+    inputBinding: {
+        latitudeInput: $('#us4-lat'),
+        longitudeInput: $('#us4-lon'),
+        radiusInput: $('#us4-radius'),
+        locationNameInput: $('#us4-address')
+    },
+    mapTypeId: google.maps.MapTypeId.SATELLITE,
+    enableAutocomplete: true
+});
+            				</pre>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Location:</label>
+
+                    <div class="col-sm-5"><input type="text" class="form-control" id="us4-address"/></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Radius:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" id="us4-radius"/></div>
+                </div>
+                <div id="us4" style="width: 550px; height: 400px;"></div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="m-t-small">
+                    <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us4-lat"/>
+                    </div>
+                    <label class="p-r-small col-sm-1 control-label">Long.:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us4-lon"/>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <script>
+                    $('#us4').locationpicker({
+                        location: {
+                            latitude: 46.15242437752303,
+                            longitude: 2.7470703125
+                        },
+                        radius: 300,
+                        inputBinding: {
+                            latitudeInput: $('#us4-lat'),
+                            longitudeInput: $('#us4-lon'),
+                            radiusInput: $('#us4-radius'),
+                            locationNameInput: $('#us4-address')
+                        },
+                        mapTypeId: google.maps.MapTypeId.SATELLITE,
+                        enableAutocomplete: true
+                    });
+                </script>
+            </div>
+        </div>
+
+        <h3 onclick="toggleElement('us5')">Using custom map styles</h3>
+        <div id="us5-example" hidden>
+            <pre>
+var customStyles = [{
+    "elementType": "geometry",
+    "stylers": [{"hue": "#ff4400"}, {"saturation": -68}, {"lightness": -4}, {"gamma": 0.72}]
+}, {"featureType": "road", "elementType": "labels.icon"}, {
+    "featureType": "landscape.man_made",
+    "elementType": "geometry",
+    "stylers": [{"hue": "#0077ff"}, {"gamma": 3.1}]
+}, {
+    "featureType": "water",
+    "stylers": [{"hue": "#00ccff"}, {"gamma": 0.44}, {"saturation": -33}]
+}, {
+    "featureType": "poi.park",
+    "stylers": [{"hue": "#44ff00"}, {"saturation": -23}]
+}, {
+    "featureType": "water",
+    "elementType": "labels.text.fill",
+    "stylers": [{"hue": "#007fff"}, {"gamma": 0.77}, {"saturation": 65}, {"lightness": 99}]
+}, {
+    "featureType": "water",
+    "elementType": "labels.text.stroke",
+    "stylers": [{"gamma": 0.11}, {"weight": 5.6}, {"saturation": 99}, {"hue": "#0091ff"}, {"lightness": -86}]
+}, {
+    "featureType": "transit.line",
+    "elementType": "geometry",
+    "stylers": [{"lightness": -48}, {"hue": "#ff5e00"}, {"gamma": 1.2}, {"saturation": -23}]
+}, {
+    "featureType": "transit",
+    "elementType": "labels.text.stroke",
+    "stylers": [{"saturation": -64}, {"hue": "#ff9100"}, {"lightness": 16}, {"gamma": 0.47}, {"weight": 2.7}]
+}];
+$('#us5').locationpicker({
+    location: {
+        latitude: 46.15242437752303,
+        longitude: 2.7470703125
+    },
+    radius: 300,
+    inputBinding: {
+        latitudeInput: $('#us5-lat'),
+        longitudeInput: $('#us5-lon'),
+        radiusInput: $('#us5-radius'),
+        locationNameInput: $('#us5-address')
+    },
+    styles: customStyles,
+    enableAutocomplete: true
+});
+				</pre>
+            <p>Result:</p>
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Location:</label>
+
+                    <div class="col-sm-5"><input type="text" class="form-control" id="us5-address"/></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Radius:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" id="us5-radius"/></div>
+                </div>
+                <div id="us5" style="width: 550px; height: 400px;"></div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="m-t-small">
+                    <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+                    <div class="col-sm-1"><input type="text" class="form-control" style="width: 110px" id="us5-lat"/>
+                    </div>
+                    <label class="p-r-small col-sm-1 control-label">Long.:</label>
+
+                    <div class="col-sm-1"><input type="text" class="form-control" style="width: 110px" id="us5-lon"/>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <script>
+                var customStyles = [{
+                    "elementType": "geometry",
+                    "stylers": [{"hue": "#ff4400"}, {"saturation": -68}, {"lightness": -4}, {"gamma": 0.72}]
+                }, {"featureType": "road", "elementType": "labels.icon"}, {
+                    "featureType": "landscape.man_made",
+                    "elementType": "geometry",
+                    "stylers": [{"hue": "#0077ff"}, {"gamma": 3.1}]
+                }, {
+                    "featureType": "water",
+                    "stylers": [{"hue": "#00ccff"}, {"gamma": 0.44}, {"saturation": -33}]
+                }, {
+                    "featureType": "poi.park",
+                    "stylers": [{"hue": "#44ff00"}, {"saturation": -23}]
+                }, {
+                    "featureType": "water",
+                    "elementType": "labels.text.fill",
+                    "stylers": [{"hue": "#007fff"}, {"gamma": 0.77}, {"saturation": 65}, {"lightness": 99}]
+                }, {
+                    "featureType": "water",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [{"gamma": 0.11}, {"weight": 5.6}, {"saturation": 99}, {"hue": "#0091ff"}, {"lightness": -86}]
+                }, {
+                    "featureType": "transit.line",
+                    "elementType": "geometry",
+                    "stylers": [{"lightness": -48}, {"hue": "#ff5e00"}, {"gamma": 1.2}, {"saturation": -23}]
+                }, {
+                    "featureType": "transit",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [{"saturation": -64}, {"hue": "#ff9100"}, {"lightness": 16}, {"gamma": 0.47}, {"weight": 2.7}]
+                }];
+                $('#us5').locationpicker({
+                    location: {latitude: 46.15242437752303, longitude: 2.7470703125},
+                    radius: 300,
+                    inputBinding: {
+                        latitudeInput: $('#us5-lat'),
+                        longitudeInput: $('#us5-lon'),
+                        radiusInput: $('#us5-radius'),
+                        locationNameInput: $('#us5-address')
+                    },
+                    styles: customStyles,
+                    enableAutocomplete: true,
+                    oninitialized: function () {
+                        $('#us5').locationpicker('autosize');
+                    }
+                });
+            </script>
+        </div>
+
+        <h3 onclick="toggleElement('us6')">Marker is fixed in center of map</h3>
+        <div id="us6-example" hidden>
+            <p><a href="https://github.com/Logicify/jquery-locationpicker-plugin">jquery-locationpicker-plugin</a> provide opportunity to fix marker in the center of map <code>div</code>.</p>
+            <pre>
+$('#us6').locationpicker({
+    location: {
+        latitude: 46.15242437752303,
+        longitude: 2.7470703125
+    },
+    radius: 300,
+    inputBinding: {
+        latitudeInput: $('#us6-lat'),
+        longitudeInput: $('#us6-lon'),
+        radiusInput: $('#us6-radius'),
+        locationNameInput: $('#us6-address')
+    },
+    markerInCenter: true,
+    enableAutocomplete: true
+});
+            </pre>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Location:</label>
+
+                    <div class="col-sm-5"><input type="text" class="form-control" id="us6-address"/></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Radius:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" id="us6-radius"/></div>
+                </div>
+                <div id="us6" style="width: 550px; height: 400px;"></div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="m-t-small">
+                    <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us6-lat"/>
+                    </div>
+                    <label class="p-r-small col-sm-1 control-label">Long.:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us6-lon"/>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <script>
+                    $('#us6').locationpicker({
+                        location: {
+                            latitude: 46.15242437752303,
+                            longitude: 2.7470703125
+                        },
+                        radius: 300,
+                        inputBinding: {
+                            latitudeInput: $('#us6-lat'),
+                            longitudeInput: $('#us6-lon'),
+                            radiusInput: $('#us6-radius'),
+                            locationNameInput: $('#us6-address')
+                        },
+                        markerInCenter: true,
+                        enableAutocomplete: true
+                    });
+                </script>
+            </div>
+        </div>
+
+        <h3 onclick="toggleElement('us7')">Providing autocompleteOptions</h3>
+        <div id="us7-example" hidden>
+            <p>You can set biases and search-area boundaries for Autocomplete. Read more
+                <a href="https://developers.google.com/maps/documentation/javascript/places-autocomplete?hl=en#set_search_area">here</a>.</p>
+            <pre>
+$('#us7').locationpicker({
+    location: {
+        latitude: 46.15242437752303,
+        longitude: 2.7470703125
+    },
+    radius: 300,
+    inputBinding: {
+        latitudeInput: $('#us7-lat'),
+        longitudeInput: $('#us7-lon'),
+        radiusInput: $('#us7-radius'),
+        locationNameInput: $('#us7-address')
+    },
+    enableAutocomplete: true,
+    autocompleteOptions: {
+        types: ['(cities)'],
+        componentRestrictions: {country: 'fr'}
+    }
+});
+            </pre>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Location:</label>
+
+                    <div class="col-sm-5"><input type="text" class="form-control" id="us7-address"/></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Radius:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" id="us7-radius"/></div>
+                </div>
+                <div id="us7" style="width: 550px; height: 400px;"></div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="m-t-small">
+                    <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us7-lat"/>
+                    </div>
+                    <label class="p-r-small col-sm-1 control-label">Long.:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us7-lon"/>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <script>
+                    $('#us7').locationpicker({
+                        location: {latitude: 46.15242437752303, longitude: 2.7470703125},
+                        radius: 300,
+                        inputBinding: {
+                            latitudeInput: $('#us7-lat'),
+                            longitudeInput: $('#us7-lon'),
+                            radiusInput: $('#us7-radius'),
+                            locationNameInput: $('#us7-address')
+                        },
+                        enableAutocomplete: true,
+                        autocompleteOptions: {
+                            types: ['(cities)'],
+                            componentRestrictions: {country: 'fr'}
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+
+        <h3 onclick="toggleElement('us8')">Manipulating map widget from callback</h3>
+        <div id="us8-example" hidden>
+            <p>If you need direct access to the actual Google Maps widget you can use <code>map</code> method as
+                follows.
+                This example illustrates how to set zoom pragmatically each time when location has been changed.</p>
+				<pre>
+$('#us8').locationpicker({
+    location: {
+        latitude: 46.15242437752303,
+        longitude: 2.7470703125
+    },
+    radius: 300,
+    onchanged: function (currentLocation, radius, isMarkerDropped) {
+        var mapContext = $(this).locationpicker('map');
+        mapContext.map.setZoom(13);
+    }
+});
+				</pre>
+            <div>
+                <div id="us8" style="width: 500px; height: 400px;"></div>
+                <script>
+                    $('#us8').locationpicker({
+                        location: {
+                            latitude: 46.15242437752303,
+                            longitude: 2.7470703125
+                        },
+                        radius: 300,
+                        onchanged: function (currentLocation, radius, isMarkerDropped) {
+                            var mapContext = $(this).locationpicker('map');
+                            mapContext.map.setZoom(13);
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+
+        <h3 onclick="toggleElement('us9')">Advanced usage of geo decoder features</h3>
+        <div id="us9-example" hidden>
+            <p>
+                Along with decoded readable location name plugin returns address split on components
+                (state, postal code, etc.) which in some cases can be pretty useful.
+            </p>
     <pre>
 function updateControls(addressComponents) {
-    $('#us5-street1').val(addressComponents.addressLine1);
-    $('#us5-city').val(addressComponents.city);
-    $('#us5-state').val(addressComponents.stateOrProvince);
-    $('#us5-zip').val(addressComponents.postalCode);
-    $('#us5-country').val(addressComponents.country);
+    $('#us9-street1').val(addressComponents.addressLine1);
+    $('#us9-city').val(addressComponents.city);
+    $('#us9-state').val(addressComponents.stateOrProvince);
+    $('#us9-zip').val(addressComponents.postalCode);
+    $('#us9-country').val(addressComponents.country);
 }
-$('#us5').locationpicker({
-    location: {latitude: 42.00, longitude: -73.82480799999996},
+$('#us9').locationpicker({
+    location: {
+        latitude: 42.00,
+        longitude: -73.82480799999996
+    },
     radius: 300,
     onchanged: function (currentLocation, radius, isMarkerDropped) {
         var addressComponents = $(this).locationpicker('map').location.addressComponents;
@@ -331,161 +722,231 @@ $('#us5').locationpicker({
     }
 });
     </pre>
-        <div>
-            <div class="container-fluid">
-                <div class="col-lg-6">
-                    <div id="us5" style="width: 500px; height: 400px;"></div>
-                    <p></p>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form container-fluid">
-                        <div class="row form-group">
-                            <label class="col-sm-2 control-label">Street:</label>
+            <div>
+                <div class="container-fluid">
+                    <div class="col-lg-6">
+                        <div id="us9" style="width: 500px; height: 400px;"></div>
+                        <p></p>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form container-fluid">
+                            <div class="row form-group">
+                                <label class="col-sm-2 control-label">Street:</label>
 
-                            <div class="col-sm-6">
-                                <input class="form-control" id="us5-street1" disabled="disabled">
+                                <div class="col-sm-6">
+                                    <input class="form-control" id="us9-street1" disabled="disabled">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-sm-2 control-label">City:</label>
+                            <div class="row form-group">
+                                <label class="col-sm-2 control-label">City:</label>
 
-                            <div class="col-sm-6">
-                                <input class="form-control" id="us5-city" disabled="disabled">
+                                <div class="col-sm-6">
+                                    <input class="form-control" id="us9-city" disabled="disabled">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-sm-2 control-label">State or Province:</label>
+                            <div class="row form-group">
+                                <label class="col-sm-2 control-label">State or Province:</label>
 
-                            <div class="col-sm-6">
-                                <input class="form-control" id="us5-state" disabled="disabled">
+                                <div class="col-sm-6">
+                                    <input class="form-control" id="us9-state" disabled="disabled">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-sm-2 control-label">Postal code:</label>
+                            <div class="row form-group">
+                                <label class="col-sm-2 control-label">Postal code:</label>
 
-                            <div class="col-sm-6">
-                                <input class="form-control" id="us5-zip" disabled="disabled">
+                                <div class="col-sm-6">
+                                    <input class="form-control" id="us9-zip" disabled="disabled">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-sm-2 control-label">Country:</label>
+                            <div class="row form-group">
+                                <label class="col-sm-2 control-label">Country:</label>
 
-                            <div class="col-sm-6">
-                                <input class="form-control" id="us5-country" disabled="disabled">
+                                <div class="col-sm-6">
+                                    <input class="form-control" id="us9-country" disabled="disabled">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="clearfix"></div>
-            <script>
-                function updateControls(addressComponents) {
-                    $('#us5-street1').val(addressComponents.addressLine1);
-                    $('#us5-city').val(addressComponents.city);
-                    $('#us5-state').val(addressComponents.stateOrProvince);
-                    $('#us5-zip').val(addressComponents.postalCode);
-                    $('#us5-country').val(addressComponents.country);
-                }
-                $('#us5').locationpicker({
-                    location: {latitude: 42.00, longitude: -73.82480799999996},
-                    radius: 300,
-                    onchanged: function (currentLocation, radius, isMarkerDropped) {
-                        var addressComponents = $(this).locationpicker('map').location.addressComponents;
-                        updateControls(addressComponents);
-                    },
-                    oninitialized: function (component) {
-                        var addressComponents = $(component).locationpicker('map').location.addressComponents;
-                        updateControls(addressComponents);
+                <div class="clearfix"></div>
+                <script>
+                    function updateControls(addressComponents) {
+                        $('#us9-street1').val(addressComponents.addressLine1);
+                        $('#us9-city').val(addressComponents.city);
+                        $('#us9-state').val(addressComponents.stateOrProvince);
+                        $('#us9-zip').val(addressComponents.postalCode);
+                        $('#us9-country').val(addressComponents.country);
                     }
-                });
-            </script>
+                    $('#us9').locationpicker({
+                        location: {latitude: 42.00, longitude: -73.82480799999996},
+                        radius: 300,
+                        onchanged: function (currentLocation, radius, isMarkerDropped) {
+                            var addressComponents = $(this).locationpicker('map').location.addressComponents;
+                            updateControls(addressComponents);
+                        },
+                        oninitialized: function (component) {
+                            var addressComponents = $(component).locationpicker('map').location.addressComponents;
+                            updateControls(addressComponents);
+                        }
+                    });
+                </script>
+            </div>
         </div>
 
-        <h3>Using widget in modal</h3>
-        <p>
-            It is pretty common situation when you put widget into the container which is not visible during
-            initialization, e.g. modal dialog. In thins case you need to call "autosize" method each time you resize
-            container.
-        </p>
-        <pre>
-            $('#us6').locationpicker({
-                location: {latitude: 46.15242437752303, longitude: 2.7470703125},
-                radius: 300,
-                inputBinding: {
-                    latitudeInput: $('#us6-lat'),
-                    longitudeInput: $('#us6-lon'),
-                    radiusInput: $('#us6-radius'),
-                    locationNameInput: $('#us6-address')
-                },
-                enableAutocomplete: true
-            });
-            $('#us6-dialog').on('shown.bs.modal', function () {
-                $('#us6').locationpicker('autosize');
-            });
-        </pre>
-        <button data-target="#us6-dialog" data-toggle="modal">Click here to open dialog</button>
-        <div id="us6-dialog" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Modal title</h4>
+        <h3 onclick="toggleElement('us10')">Select a city as a location rather than a specific address</h3>
+        <div id="us10-example" hidden>
+            <p>You can set property <code>addressFormat</code> to display specific address in <code>locationNameInput</code>. Default value is <code>postal_code</code>. All types <a
+                    href="https://developers.google.com/maps/documentation/geocoding/intro?hl=en#Types">here</a></p>
+            <pre>
+$('#us10').locationpicker({
+    location: {
+        latitude: 46.15242437752303,
+        longitude: 2.7470703125
+    },
+    inputBinding: {
+        latitudeInput: $('#us10-lat'),
+        longitudeInput: $('#us10-lon'),
+        radiusInput: $('#us10-radius'),
+        locationNameInput: $('#us10-address')
+    },
+    radius: 300,
+    addressFormat: 'country'
+});
+            </pre>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Location:</label>
+
+                    <div class="col-sm-5"><input type="text" class="form-control" id="us10-address"/></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Radius:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" id="us10-radius"/></div>
+                </div>
+                <div id="us10" style="width: 550px; height: 400px;"></div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="m-t-small">
+                    <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+                    <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us10-lat"/>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-horizontal" style="width: 550px">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Location:</label>
+                    <label class="p-r-small col-sm-1 control-label">Long.:</label>
 
-                                <div class="col-sm-10"><input type="text" class="form-control" id="us6-address"/></div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Radius:</label>
-
-                                <div class="col-sm-5"><input type="text" class="form-control" id="us6-radius"/></div>
-                            </div>
-                            <div id="us6" style="width: 100%; height: 400px;"></div>
-                            <div class="clearfix">&nbsp;</div>
-                            <div class="m-t-small">
-                                <label class="p-r-small col-sm-1 control-label">Lat.:</label>
-
-                                <div class="col-sm-3"><input type="text" class="form-control" style="width: 110px"
-                                                             id="us6-lat"/></div>
-                                <label class="p-r-small col-sm-2 control-label">Long.:</label>
-
-                                <div class="col-sm-3"><input type="text" class="form-control" style="width: 110px"
-                                                             id="us6-lon"/></div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <script>
-                                $('#us6').locationpicker({
-                                    location: {latitude: 46.15242437752303, longitude: 2.7470703125},
-                                    radius: 300,
-                                    inputBinding: {
-                                        latitudeInput: $('#us6-lat'),
-                                        longitudeInput: $('#us6-lon'),
-                                        radiusInput: $('#us6-radius'),
-                                        locationNameInput: $('#us6-address')
-                                    },
-                                    enableAutocomplete: true
-                                });
-                                $('#us6-dialog').on('shown.bs.modal', function () {
-                                    $('#us6').locationpicker('autosize');
-                                });
-                            </script>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                    <div class="col-sm-2"><input type="text" class="form-control" style="width: 110px" id="us10-lon"/>
                     </div>
                 </div>
-                <!-- /.modal-content -->
+                <div class="clearfix"></div>
+                <script>
+                    $('#us10').locationpicker({
+                        location: {
+                            latitude: 46.15242437752303,
+                            longitude: 2.7470703125
+                        },
+                        inputBinding: {
+                            latitudeInput: $('#us10-lat'),
+                            longitudeInput: $('#us10-lon'),
+                            radiusInput: $('#us10-radius'),
+                            locationNameInput: $('#us10-address')
+                        },
+                        radius: 300,
+                        addressFormat: 'country'
+                    });
+                </script>
             </div>
-            <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal -->
 
+        <h3 onclick="toggleElement('us11')">Using widget in modal</h3>
+        <div id="us11-example" hidden>
+            <p>
+                It is pretty common situation when you put widget into the container which is not visible during
+                initialization, e.g. modal dialog. In thins case you need to call "autosize" method each time you resize
+                container.
+            </p>
+        <pre>
+$('#us11').locationpicker({
+    location: {
+        latitude: 46.15242437752303,
+        longitude: 2.7470703125
+    },
+    radius: 300,
+    inputBinding: {
+        latitudeInput: $('#us11-lat'),
+        longitudeInput: $('#us11-lon'),
+        radiusInput: $('#us11-radius'),
+        locationNameInput: $('#us11-address')
+    },
+    enableAutocomplete: true
+});
+$('#us11-dialog').on('shown.bs.modal', function () {
+    $('#us11').locationpicker('autosize');
+});
+        </pre>
+            <button data-target="#us11-dialog" data-toggle="modal">Click here to open dialog</button>
+            <div id="us11-dialog" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modal title</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-horizontal" style="width: 550px">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Location:</label>
+
+                                    <div class="col-sm-10"><input type="text" class="form-control" id="us11-address"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Radius:</label>
+
+                                    <div class="col-sm-5"><input type="text" class="form-control" id="us11-radius"/>
+                                    </div>
+                                </div>
+                                <div id="us11" style="width: 100%; height: 400px;"></div>
+                                <div class="clearfix">&nbsp;</div>
+                                <div class="m-t-small">
+                                    <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+                                    <div class="col-sm-3"><input type="text" class="form-control" style="width: 110px"
+                                                                 id="us11-lat"/></div>
+                                    <label class="p-r-small col-sm-2 control-label">Long.:</label>
+
+                                    <div class="col-sm-3"><input type="text" class="form-control" style="width: 110px"
+                                                                 id="us11-lon"/></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <script>
+                                    $('#us11').locationpicker({
+                                        location: {latitude: 46.15242437752303, longitude: 2.7470703125},
+                                        radius: 300,
+                                        inputBinding: {
+                                            latitudeInput: $('#us11-lat'),
+                                            longitudeInput: $('#us11-lon'),
+                                            radiusInput: $('#us11-radius'),
+                                            locationNameInput: $('#us11-address')
+                                        },
+                                        enableAutocomplete: true
+                                    });
+                                    $('#us11-dialog').on('shown.bs.modal', function () {
+                                        $('#us11').locationpicker('autosize');
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+        </div>
 
         <div>
             <h2 class="page-header" id="credits">Credits</h2>

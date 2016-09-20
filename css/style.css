@@ -5,6 +5,12 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
+#examples h3{
+    cursor: pointer
+}
+.pac-container {
+    z-index: 99999;
+}
 footer {
 	margin-top: 45px;
 }
