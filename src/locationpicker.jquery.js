@@ -188,8 +188,9 @@
         if (inputBinding) {
             if (inputBinding.radiusInput){
                 inputBinding.radiusInput.on("change", function(e) {
-                    if (!e.originalEvent) { return }
-                    gmapContext.radius = $(this).val();
+                    var radiusInputValue = $(this).val();
+                    if (!e.originalEvent || isNaN(radiusInputValue)) { return }
+                    gmapContext.radius = radiusInputValue;
                     GmUtility.setPosition(gmapContext, gmapContext.location, function(context){
                         context.settings.onchanged.apply(gmapContext.domContainer,
                             [GmUtility.locationFromLatLng(context.location), context.radius, false]);
@@ -239,9 +240,9 @@
             }
             if (inputBinding.latitudeInput) {
                 inputBinding.latitudeInput.on("change", function(e) {
-                    if (!e.originalEvent) { return }
-                    GmUtility.setPosition(gmapContext, new google.maps.LatLng($(this).val(), gmapContext.location.lng()), function(context){
-                        context.settings.onchanged.apply(gmapContext.domContainer,
+                    var latitudeInputValue = $(this).val();
+                    if (!e.originalEvent || isNaN(latitudeInputValue) ) { return }
+                        GmUtility.setPosition(gmapContext, new google.maps.LatLng(latitudeInputValue, gmapContext.location.lng()), function(context){    context.settings.onchanged.apply(gmapContext.domContainer,
                             [GmUtility.locationFromLatLng(context.location), context.radius, false]);
                         updateInputValues(gmapContext.settings.inputBinding, gmapContext);
                     });
@@ -249,8 +250,9 @@
             }
             if (inputBinding.longitudeInput) {
                 inputBinding.longitudeInput.on("change", function(e) {
-                    if (!e.originalEvent) { return }
-                    GmUtility.setPosition(gmapContext, new google.maps.LatLng(gmapContext.location.lat(), $(this).val()), function(context){
+                    var longitudeInputValue = $(this).val();
+                    if (!e.originalEvent || isNaN(longitudeInputValue) ) { return }
+                    GmUtility.setPosition(gmapContext, new google.maps.LatLng(gmapContext.location.lat(), longitudeInputValue), function(context){
                         context.settings.onchanged.apply(gmapContext.domContainer,
                             [GmUtility.locationFromLatLng(context.location), context.radius, false]);
                         updateInputValues(gmapContext.settings.inputBinding, gmapContext);
