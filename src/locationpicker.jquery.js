@@ -110,6 +110,10 @@
                     var address = GmUtility.addressByFormat(results, gmapContext.settings.addressFormat);
                     gmapContext.locationName = address.formatted_address;
                     gmapContext.addressComponents = GmUtility.address_component_from_google_geocode(address.address_components);
+                }else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                    return setTimeout(function () {
+                        GmUtility.updateLocationName(gmapContext, callback);
+                    }, 1000);
                 }
                 if (callback) {
                     callback.call(this, gmapContext);
