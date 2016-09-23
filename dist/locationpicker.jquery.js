@@ -1,4 +1,52 @@
-/*! jquery-locationpicker - v0.1.14 - 2016-09-20 */
+/*! jquery-locationpicker - v0.1.15 - 2016-09-23 */
+"use strict";
+
+angular.module("angular-jquery-locationpicker", []).constant("angularJQueryLocationpickerDefaultValue", {
+    css: {
+        width: "550px",
+        height: "400px",
+        "float": "left"
+    }
+}).service("angularJQueryLocationpickerService", [ "angularJQueryLocationpickerDefaultValue", function(defaultValue) {
+    var service = {};
+    service.callAutosizeOnInit = function(element, initCb) {
+        var cb = initCb;
+        if (!!cb) {
+            initCb = function() {
+                $(element).locationpicker("autosize");
+                cb();
+            };
+        } else {
+            initCb = function() {
+                $(element).locationpicker("autosize");
+            };
+        }
+    };
+    service.checkDefaultStyles = function(element) {
+        var elementStyle = element[0].style;
+        element.css({
+            width: elementStyle.width || defaultValue.css.width,
+            height: elementStyle.height || defaultValue.css.height,
+            "float": elementStyle.float || defaultValue.css.float,
+            overflow: "hidden"
+        });
+    };
+    return service;
+} ]).directive("jqueryLocationpicker", [ "angularJQueryLocationpickerService", function(service) {
+    return {
+        restrict: "EA",
+        replace: true,
+        scope: {
+            options: "="
+        },
+        link: function(scope, element, attrs) {
+            service.checkDefaultStyles(element);
+            service.callAutosizeOnInit(element, scope.options.oninitialized);
+            $(element).locationpicker(scope.options);
+        }
+    };
+} ]);
+
 (function($) {
     function GMapContext(domElement, options) {
         var _map = new google.maps.Map(domElement, options);
@@ -91,6 +139,10 @@
                     var address = GmUtility.addressByFormat(results, gmapContext.settings.addressFormat);
                     gmapContext.locationName = address.formatted_address;
                     gmapContext.addressComponents = GmUtility.address_component_from_google_geocode(address.address_components);
+                } else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                    return setTimeout(function() {
+                        GmUtility.updateLocationName(gmapContext, callback);
+                    }, 1e3);
                 }
                 if (callback) {
                     callback.call(this, gmapContext);
@@ -148,10 +200,11 @@
         if (inputBinding) {
             if (inputBinding.radiusInput) {
                 inputBinding.radiusInput.on("change", function(e) {
-                    if (!e.originalEvent) {
+                    var radiusInputValue = $(this).val();
+                    if (!e.originalEvent || isNaN(radiusInputValue)) {
                         return;
                     }
-                    gmapContext.radius = $(this).val();
+                    gmapContext.radius = radiusInputValue;
                     GmUtility.setPosition(gmapContext, gmapContext.location, function(context) {
                         context.settings.onchanged.apply(gmapContext.domContainer, [ GmUtility.locationFromLatLng(context.location), context.radius, false ]);
                     });
@@ -204,10 +257,11 @@
             }
             if (inputBinding.latitudeInput) {
                 inputBinding.latitudeInput.on("change", function(e) {
-                    if (!e.originalEvent) {
+                    var latitudeInputValue = $(this).val();
+                    if (!e.originalEvent || isNaN(latitudeInputValue)) {
                         return;
                     }
-                    GmUtility.setPosition(gmapContext, new google.maps.LatLng($(this).val(), gmapContext.location.lng()), function(context) {
+                    GmUtility.setPosition(gmapContext, new google.maps.LatLng(latitudeInputValue, gmapContext.location.lng()), function(context) {
                         context.settings.onchanged.apply(gmapContext.domContainer, [ GmUtility.locationFromLatLng(context.location), context.radius, false ]);
                         updateInputValues(gmapContext.settings.inputBinding, gmapContext);
                     });
@@ -215,10 +269,11 @@
             }
             if (inputBinding.longitudeInput) {
                 inputBinding.longitudeInput.on("change", function(e) {
-                    if (!e.originalEvent) {
+                    var longitudeInputValue = $(this).val();
+                    if (!e.originalEvent || isNaN(longitudeInputValue)) {
                         return;
                     }
-                    GmUtility.setPosition(gmapContext, new google.maps.LatLng(gmapContext.location.lat(), $(this).val()), function(context) {
+                    GmUtility.setPosition(gmapContext, new google.maps.LatLng(gmapContext.location.lat(), longitudeInputValue), function(context) {
                         context.settings.onchanged.apply(gmapContext.domContainer, [ GmUtility.locationFromLatLng(context.location), context.radius, false ]);
                         updateInputValues(gmapContext.settings.inputBinding, gmapContext);
                     });
@@ -306,7 +361,7 @@
                 return;
             }
             var settings = $.extend({}, $.fn.locationpicker.defaults, options);
-            var gmapContext = new GMapContext(this, {
+            var gmapContext = new GMapContext(this, $.extend({}, settings.mapOptions, {
                 zoom: settings.zoom,
                 center: new google.maps.LatLng(settings.location.latitude, settings.location.longitude),
                 mapTypeId: settings.mapTypeId,
@@ -324,7 +379,7 @@
                 markerIcon: settings.markerIcon,
                 markerDraggable: settings.markerDraggable,
                 markerVisible: settings.markerVisible
-            });
+            }));
             $target.data("locationpicker", gmapContext);
             function displayMarkerWithSelectedArea() {
                 GmUtility.setPosition(gmapContext, gmapContext.marker.position, function(context) {
@@ -369,6 +424,7 @@
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         styles: [],
+        mapOptions: {},
         scrollwheel: true,
         inputBinding: {
             latitudeInput: null,
