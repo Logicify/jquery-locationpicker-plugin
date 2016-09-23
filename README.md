@@ -40,7 +40,7 @@ Documentation along with examples available [here](http://logicify.github.io/jqu
 
 Credits
 -------
-Dmitry Berezovsky, Logicify (<http://logicify.com/>)
-Gennadiy Varava, Logicify (<http://logicify.com/>)
-Emanuele Coppola, Libre sc (<http://libreidee.com/>)
+* Dmitry Berezovsky, Logicify (<http://logicify.com/>)
+* Gennadiy Varava, Logicify (<http://logicify.com/>)
+* Emanuele Coppola, Libre sc (<http://libreidee.com/>)
 
