@@ -376,7 +376,7 @@
             // Defaults
             var settings = $.extend({}, $.fn.locationpicker.defaults, options );
             // Initialize
-            var gmapContext = new GMapContext(this, {
+            var gmapContext = new GMapContext(this, $.extend({}, settings.mapOptions, {
                 zoom: settings.zoom,
                 center: new google.maps.LatLng(settings.location.latitude, settings.location.longitude),
                 mapTypeId: settings.mapTypeId,
@@ -394,7 +394,7 @@
                 markerIcon: settings.markerIcon,
                 markerDraggable: settings.markerDraggable,
                 markerVisible: settings.markerVisible
-            });
+            }));
             $target.data("locationpicker", gmapContext);
             // Subscribe GMap events
             function displayMarkerWithSelectedArea() {
@@ -438,6 +438,7 @@
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         styles: [],
+        mapOptions: {},
         scrollwheel: true,
         inputBinding: {
             latitudeInput: null,
