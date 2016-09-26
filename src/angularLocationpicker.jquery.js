@@ -52,7 +52,7 @@ angular.module('angular-jquery-locationpicker', [])
             return service;
         }
     ])
-    .directive('jqueryLocationpicker', [
+    .directive('locationpicker', [
         'angularJQueryLocationpickerService',
         function (service) {
             return {

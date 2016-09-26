@@ -1,4 +1,4 @@
-/*! jquery-locationpicker - v0.1.15 - 2016-09-24 */
+/*! jquery-locationpicker - v0.1.15 - 2016-09-26 */
 "use strict";
 
 angular.module("angular-jquery-locationpicker", []).constant("angularJQueryLocationpickerDefaultValue", {
@@ -32,7 +32,7 @@ angular.module("angular-jquery-locationpicker", []).constant("angularJQueryLocat
         });
     };
     return service;
-} ]).directive("jqueryLocationpicker", [ "angularJQueryLocationpickerService", function(service) {
+} ]).directive("locationpicker", [ "angularJQueryLocationpickerService", function(service) {
     return {
         restrict: "EA",
         replace: true,
