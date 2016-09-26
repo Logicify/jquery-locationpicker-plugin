@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <!--angular-->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <!-- Bootstrap stuff -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src='https://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
+    <script src="../dist/locationpicker.jquery.min.js"></script>
+
+    <script src="../src/angularLocationpicker.jquery.js"></script>
+
+    <title>Angular example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body ng-app="locationpickerApp" ng-controller="locationpickerController">
+<div class="form-horizontal" style="width: 550px">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Location:</label>
+
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="us3-address"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Radius:</label>
+
+        <div class="col-sm-5">
+            <input type="text" class="form-control" id="us3-radius"/>
+        </div>
+    </div>
+
+    <!--Map by element. Also it can be attribute-->
+    <locationpicker options="locationpickerOptions"></locationpicker>
+
+    <div class="clearfix">&nbsp;</div>
+    <div class="m-t-small">
+        <label class="p-r-small col-sm-1 control-label">Lat.:</label>
+
+        <div class="col-sm-3">
+            <input type="text" class="form-control" style="width: 110px" id="us3-lat"/>
+        </div>
+        <label class="p-r-small col-sm-2 control-label">Long.:</label>
+
+        <div class="col-sm-3">
+            <input type="text" class="form-control" style="width: 110px" id="us3-lon"/>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<script>
+    angular.module('locationpickerApp', ['angular-jquery-locationpicker'])
+            .controller('locationpickerController', [
+                '$scope',
+                function ($scope) {
+                    $scope.locationpickerOptions = {
+                        location: {
+                            latitude: 46.15242437752303,
+                            longitude: 2.7470703125
+                        },
+                        inputBinding: {
+                            latitudeInput: $('#us3-lat'),
+                            longitudeInput: $('#us3-lon'),
+                            radiusInput: $('#us3-radius'),
+                            locationNameInput: $('#us3-address')
+                        },
+                        radius: 300,
+                        enableAutocomplete: true
+                    };
+                }
+            ]);
+</script>
+</body>
+
+</html>

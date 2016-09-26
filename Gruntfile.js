@@ -38,7 +38,8 @@ module.exports = function (grunt) {
                     sourceMap: true
                 },
                 files: {
-                    '<%= appConfig.dist %>/locationpicker.jquery.min.js': ['<%= appConfig.app %>/*.js']
+                    '<%= appConfig.dist %>/locationpicker.jquery.min.js': ['<%= appConfig.app %>/locationpicker.jquery.js'],
+                    '<%= appConfig.dist %>/angularLocationpicker.jquery.min.js': ['<%= appConfig.app %>/angularLocationpicker.jquery.js']
                 }
             },
             beautify: {
@@ -52,7 +53,8 @@ module.exports = function (grunt) {
                     mangle: false
                 },
                 files: {
-                    '<%= appConfig.dist %>/locationpicker.jquery.js': ['<%= appConfig.app %>/*.js']
+                    '<%= appConfig.dist %>/locationpicker.jquery.js': ['<%= appConfig.app %>/locationpicker.jquery.js'],
+                    '<%= appConfig.dist %>/angularLocationpicker.jquery.js': ['<%= appConfig.app %>/angularLocationpicker.jquery.js']
                 }
             }
         }
