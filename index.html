@@ -34,6 +34,7 @@
                 <li><a href="#features">Features</a></li>
                 <li><a href="#usage">Usage</a></li>
                 <li><a href="#examples">Examples</a></li>
+                <li><a href="#angular-wrapper">Angular wrapper</a></li>
                 <li><a href="#credits">Credits</a></li>
             </ul>
         </div>
@@ -89,7 +90,7 @@
     <div id="usage">
         <h2 class="page-header">Usage</h2>
         The first step is including all requirements:
-				<pre>
+        <pre>
 &lt;head&gt;
     &lt;script src="https://code.jquery.com/jquery-1.10.2.min.js"&gt;&lt;/script&gt;
     &lt;script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'&gt;&lt;/script&gt;
@@ -97,7 +98,7 @@
 &lt;/head&gt;
 				</pre>
         Basic usage without any settings:
-<pre>
+        <pre>
 &lt;div id="somecomponent" style="width: 500px; height: 400px;"&gt;&lt;/div&gt;
 &lt;script&gt;
     $('#somecomponent').locationpicker();
@@ -109,7 +110,7 @@
         <div id="us0" style="width: 500px; height: 400px;"></div>
         <script>$('#us0').locationpicker();</script>
         <h3>Default options:</h3>
-				<pre>
+        <pre>
 {
     location: {
         latitude: 40.7324319,
@@ -120,6 +121,7 @@
     zoom: 15,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     styles: [],
+    mapOptions: {},
     scrollwheel: true,
     inputBinding: {
         latitudeInput: null,
@@ -133,6 +135,10 @@
     addressFormat: 'postal_code',
     enableReverseGeocode: true,
     draggable: true,
+    onchanged: function(currentLocation, radius, isMarkerDropped) {},
+    onlocationnotfound: function(locationName) {},
+    oninitialized: function (component) {},
+    // must be undefined to use the default gMaps marker
     markerIcon: undefined,
     markerDraggable: true,
     markerVisible : true
@@ -154,6 +160,51 @@
                 Will be fired after initialization and positioning marker to the initial location
             </li>
         </ul>
+
+        <h3 id="plugin-options">Plugin Options</h3>
+        <table class="table table-bordered" style="text-align: center;">
+            <tr>
+                <td>name</td>
+                <td>type</td>
+                <td>params</td>
+                <td>description</td>
+            </tr>
+            <tr>
+                <td rowspan="2" style="vertical-align: middle;">location</td>
+                <td>getter</td>
+                <td><code>null</code></td>
+                <td>to get current position of marker</td>
+            </tr>
+            <tr>
+                <td>setter</td>
+                <td><code>radius</code>, <code>latitude</code>, <code>longitude</code></td>
+                <td>to set position of marker</td>
+            </tr>
+            <tr>
+                <td>subscribe</td>
+                <td>setter</td>
+                <td><code>event</code>, <code>callback</code></td>
+                <td>add listener to map on <code>event</code> with <code>callback</code></td>
+            </tr>
+            <tr>
+                <td rowspan="2" style="vertical-align: middle;">map</td>
+                <td>getter</td>
+                <td><code>null</code></td>
+                <td>return current map context</td>
+            </tr>
+            <tr>
+                <td>setter</td>
+                <td><code>null</code></td>
+                <td>is <bold>not</bold> available
+                </td>
+            </tr>
+            <tr>
+                <td>autosize</td>
+                <td>call method</td>
+                <td><code>null</code></td>
+                <td>call inner method of plugin to call map event 'resize'</td>
+            </tr>
+        </table>
     </div>
     <div id="examples">
         <h2 class="page-header">Examples</h2>
@@ -269,7 +320,7 @@ Long.: &lt;input type="text" id="us2-lon"/&gt;
             <p>The following example illustrates how to subscribe "Change" event. See the list of the available events
                 along
                 with functions signature <a href="#events">above</a>.</p>
-				<pre>
+            <pre>
 $('#us3').locationpicker({
     location: {
         latitude: 46.15242437752303,
@@ -338,7 +389,7 @@ $('#us3').locationpicker({
         <div id="us4-example" hidden>
             <p>You can set one of the <code>google.maps.MapTypeId</code> value. Google Maps provides four map types:
                 <code>HYBRID</code>, <code>ROADMAP</code>, <code>SATELLITE</code> and <code>TERRAIN</code></p>
-				<pre>
+            <pre>
 $('#us4').locationpicker({
     location: {
         latitude: 46.15242437752303,
@@ -526,7 +577,8 @@ $('#us5').locationpicker({
 
         <h3 onclick="toggleElement('us6')">Marker is fixed in center of map</h3>
         <div id="us6-example" hidden>
-            <p><a href="https://github.com/Logicify/jquery-locationpicker-plugin">jquery-locationpicker-plugin</a> provide opportunity to fix marker in the center of map <code>div</code>.</p>
+            <p><a href="https://github.com/Logicify/jquery-locationpicker-plugin">jquery-locationpicker-plugin</a>
+                provide opportunity to fix marker in the center of map <code>div</code>.</p>
             <pre>
 $('#us6').locationpicker({
     location: {
@@ -591,7 +643,8 @@ $('#us6').locationpicker({
         <h3 onclick="toggleElement('us7')">Providing autocompleteOptions</h3>
         <div id="us7-example" hidden>
             <p>You can set biases and search-area boundaries for Autocomplete. Read more
-                <a href="https://developers.google.com/maps/documentation/javascript/places-autocomplete?hl=en#set_search_area">here</a>.</p>
+                <a href="https://developers.google.com/maps/documentation/javascript/places-autocomplete?hl=en#set_search_area">here</a>.
+            </p>
             <pre>
 $('#us7').locationpicker({
     location: {
@@ -661,7 +714,7 @@ $('#us7').locationpicker({
             <p>If you need direct access to the actual Google Maps widget you can use <code>map</code> method as
                 follows.
                 This example illustrates how to set zoom pragmatically each time when location has been changed.</p>
-				<pre>
+            <pre>
 $('#us8').locationpicker({
     location: {
         latitude: 46.15242437752303,
@@ -698,7 +751,7 @@ $('#us8').locationpicker({
                 Along with decoded readable location name plugin returns address split on components
                 (state, postal code, etc.) which in some cases can be pretty useful.
             </p>
-    <pre>
+            <pre>
 function updateControls(addressComponents) {
     $('#us9-street1').val(addressComponents.addressLine1);
     $('#us9-city').val(addressComponents.city);
@@ -795,8 +848,9 @@ $('#us9').locationpicker({
 
         <h3 onclick="toggleElement('us10')">Select a city as a location rather than a specific address</h3>
         <div id="us10-example" hidden>
-            <p>You can set property <code>addressFormat</code> to display specific address in <code>locationNameInput</code>. Default value is <code>postal_code</code>. All types <a
-                    href="https://developers.google.com/maps/documentation/geocoding/intro?hl=en#Types">here</a></p>
+            <p>You can set property <code>addressFormat</code> to display specific address in
+                <code>locationNameInput</code>. Default value is <code>postal_code</code>. All types <a
+                        href="https://developers.google.com/maps/documentation/geocoding/intro?hl=en#Types">here</a></p>
             <pre>
 $('#us10').locationpicker({
     location: {
@@ -863,7 +917,7 @@ $('#us10').locationpicker({
                 initialization, e.g. modal dialog. In thins case you need to call "autosize" method each time you resize
                 container.
             </p>
-        <pre>
+            <pre>
 $('#us11').locationpicker({
     location: {
         latitude: 46.15242437752303,
@@ -946,6 +1000,58 @@ $('#us11-dialog').on('shown.bs.modal', function () {
                 <!-- /.modal-dialog -->
             </div>
             <!-- /.modal -->
+        </div>
+
+        <div>
+            <h2 class="page-header" id="angular-wrapper"><img
+                    src="https://avatars0.githubusercontent.com/u/139426?v=3&s=400" width="50px">ngular wrapper</h2>
+            <p>Since version <a href="https://github.com/Logicify/jquery-locationpicker-plugin/releases/tag/0.1.15">0.1.15</a> available simple ability to add our plugin in angular applicaions.</p>
+            <h3>Usage</h3>
+            <p>Include all requirements</p>
+            <pre>
+&lt;head&gt;
+    //angular
+    &lt;script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"&gt;&lt;/script&gt;
+
+    //jQuery
+    &lt;script src="https://code.jquery.com/jquery-1.10.2.min.js"&gt;&lt;/script&gt;
+
+    //Google maps API
+    &lt;script type="text/javascript" src='https://maps.google.com/maps/api/js?sensor=false&libraries=places'&gt;&lt;/script&gt;
+
+    //Locationpicker
+    &lt;script src="../js/locationpicker.jquery.min.js"&gt;&lt;/script&gt;
+    &lt;script src="../js/angularLocationpicker.jquery.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+            </pre>
+            <p>Basic usage</p>
+            <pre>
+&lt;body ng-app="angularExample" ng-controller="angularExampleController"&gt;
+    &lt;locationpicker options="locationpickerOptions">&lt;/locationpicker&gt;
+&lt;script&gt;
+    angular.module('angularExample', ['angular-jquery-locationpicker'])
+        .controller('angularExampleController', [
+            '$scope',
+            function ($scope) {
+                $scope.locationpickerOptions = {
+                    location: {
+                        latitude: 46.15242437752303,
+                        longitude: 2.7470703125
+                    },
+                    inputBinding: {
+                        latitudeInput: $('#us3-lat'),
+                        longitudeInput: $('#us3-lon'),
+                        radiusInput: $('#us3-radius'),
+                        locationNameInput: $('#us3-address')
+                    },
+                    radius: 300,
+                    enableAutocomplete: true
+                };
+            }
+        ]);
+&lt;/script&gt;
+&lt;/body&gt;
+            </pre>
         </div>
 
         <div>
