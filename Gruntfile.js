@@ -57,13 +57,22 @@ module.exports = function (grunt) {
                     '<%= appConfig.dist %>/angularLocationpicker.jquery.js': ['<%= appConfig.app %>/angularLocationpicker.jquery.js']
                 }
             }
+        },
+        copy: {
+            main: {
+                expand: true,
+                cwd: 'src/ngLocationpicker/',
+                src: '**',
+                dest: 'dist/ngLocationpicker',
+            }
         }
     });
 
     grunt.registerTask('build', [
         'clean:dist',
         'uglify:minimize',
-        'uglify:beautify'
+        'uglify:beautify',
+        'copy'
     ]);
 
 };

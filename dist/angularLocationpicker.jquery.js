@@ -1,4 +1,4 @@
-/*! jquery-locationpicker - v0.1.15 - 2016-09-26 */
+/*! jquery-locationpicker - v0.1.16 - 2017-10-02 */
 "use strict";
 
 angular.module("angular-jquery-locationpicker", []).constant("angularJQueryLocationpickerDefaultValue", {
